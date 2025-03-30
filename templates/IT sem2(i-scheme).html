@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PolytechEDGE - Information Technology Semester 2 I-Scheme resources for polytechnic students">
+    <title>IT Semester 2 I-Scheme | PolytechEDGE</title>
+
+    <!-- CSS libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/polytechEdge.css') }}">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        /* Resource Card Styles */
+        .resource-card {
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            border: none;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            background: var(--bs-tertiary-bg);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .resource-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .resource-card .card-title {
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            color: var(--bs-primary);
+            position: relative;
+            display: inline-block;
+            padding-bottom: 0.5rem;
+        }
+
+        .resource-card .card-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: var(--bs-primary);
+            transition: all 0.3s ease;
+        }
+
+        .resource-card:hover .card-title::after {
+            width: 100%;
+        }
+
+        .resource-link {
+            display: block;
+            padding: 8px 0;
+            color: var(--bs-body-color);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(var(--bs-secondary-rgb), 0.1);
+        }
+
+        .resource-link:hover {
+            color: var(--bs-primary);
+            transform: translateX(5px);
+        }
+
+        .resource-link i {
+            margin-right: 8px;
+            color: var(--bs-primary);
+        }
+
+        .resource-link:last-child {
+            border-bottom: none;
+        }
+
+        /* Hero Section Styles */
+        .hero-section {
+            background: linear-gradient(135deg, var(--bs-primary), #8e44ad);
+            padding: 5rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+        }
+
+        /* Footer Styles */
+        .footer-wave {
+            height: 50px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%230d6efd' fill-opacity='0.4' d='M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,224C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            background-repeat: no-repeat;
+        }
+
+        .footer {
+            background-color: var(--bs-dark);
+            color: white;
+        }
+
+        .footer-link {
+            display: block;
+            margin-bottom: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(var(--bs-primary-rgb), 0.1);
+            border-radius: 50%;
+            margin-right: 8px;
+            transition: all 0.3s ease;
+            color: var(--bs-primary);
+        }
+
+        .social-icon:hover {
+            background: var(--bs-primary);
+            color: white;
+            transform: translateY(-5px);
+        }
+
+        .mode-toggle {
+            width: 50px;
+            height: 26px;
+            background-color: #333;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6px;
+        }
+
+        .toggle-icon {
+            font-size: 12px;
+            color: #fff;
+            z-index: 1;
+        }
+
+        .toggle-thumb {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #fff;
+            border-radius: 50%;
+            left: 3px;
+            transition: all 0.3s ease;
+        }
+
+        [data-bs-theme="light"] .toggle-thumb {
+            left: calc(100% - 23px);
+        }
+
+        [data-bs-theme="light"] .sun {
+            color: #ffc107;
+        }
+
+        [data-bs-theme="dark"] .moon {
+            color: #adb5bd;
+        }
+
+        .subject-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--bs-primary);
+            margin: 2rem 0;
+            text-align: center;
+            padding-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+
+        .subject-title::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 3px;
+            background: var(--bs-primary);
+            bottom: 0;
+            left: 20%;
+        }
+    </style>
+</head>
+
+<body data-bs-theme="dark">
+    <!-- Include the reusable header/navbar component -->
+    {% include 'components/header.html' %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS library for animations -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+    <!-- Navigation Bar -->
+    
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container text-white">
+            <div class="row align-items-center">
+                <div class="col-lg-12 text-center" data-aos="fade-up">
+                    <h1 class="display-4 fw-bold mb-3">Information Technology - Semester 2</h1>
+                    <p class="lead mb-4">I-Scheme curriculum resources for Information Technology second semester. Access syllabi, 
+                    question papers, lab manuals, and more.</p>
+                    <div class="d-flex justify-content-center gap-3 mt-4">
+                        <a href="{{ url_for('it_i_scheme') }}" class="btn btn-outline-light rounded-pill px-4 py-2">
+                            <i class="fas fa-arrow-left me-2"></i> Back to Semesters
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row g-4">
+            <!-- Subject 22213 -->
+            <div class="col-12">
+                <h3 class="subject-title" data-aos="fade-right">22225</h3>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="card resource-card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Previous Year Question Papers</h4>
+                        <p><a href="https://drive.google.com/file/d/1BQIfMvrhuU1l5cyU6bs8ajnblNL7XDl2/view?usp=drive_link"
+                            class="card-link">[22225]-2024-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1j9rZa-dJBgIm_0804xMTbPM1vOfO8tu6/view?usp=drive_link"
+                            class="card-link">[22225]-2023-Winter-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1n6y61ZsMVAnOmEMGysQBOkVXfwGIenoP/view?usp=drive_link"
+                            class="card-link">[22225]-2023-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1Yv2TaYlgWuFkYEUznOpF5VsYQWVm5jST/view?usp=drive_link"
+                            class="card-link">[22225]-2022-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1ropZvGirWohpDwoBvy6T_E53NmyZ1Ihq/view?usp=drive_link"
+                            class="card-link">[22225]-2019-Winter-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1chgGAIW3PXmWeSLJYG26-X7w8URPanO1/view?usp=drive_link"
+                            class="card-link">[22225]-2019-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1gxvHZGYVAYSk_ipG7mQOT5on_jWbruqc/view?usp=drive_link"
+                            class="card-link">[22225]-2018-Winter-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1PklXITqHljYNCCD5g0su8GNf5eWUm-ky/view?usp=drive_link"
+                            class="card-link">[22225]-2018-Summer-question-paper</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="card resource-card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Previous Year Model Answers</h4>
+                        <p> <a href="https://drive.google.com/file/d/1eR8tp2m5lX-kuVBKtlJymQEuuMiNsgZ_/view?usp=drive_link"
+                            class="card-link">[22225]-2022-Summer-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/1WqXn88sXaQ28DbAP4A57kfDpT2XqRsB2/view?usp=drive_link"
+                            class="card-link">[22225]-2019-Winter-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/1hnWFdStM67mPabZgqAyjLgd0EQttXI8r/view?usp=drive_link"
+                            class="card-link">[22225]-2018-Winter-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/1y4P72gljFXnXqahCWrgIPcnFwaoEy7pj/view?usp=drive_link"
+                            class="card-link">[22225]-2018-Summer-model-answer-paper</a> </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="card resource-card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Notes</h4>
+                        <p class="text-muted fst-italic">Coming soon! Check back later for study notes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subject 22214 -->
+            <div class="col-12">
+                <h3 class="subject-title" data-aos="fade-right">22224</h3>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="card resource-card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Previous Year Question Papers</h4>
+                        <p><a href="https://drive.google.com/file/d/14ZbIEkpMyFU8GrInlC3oeR8u6-jTXT3z/view?usp=drive_link"
+                            class="card-link">[22224]-2024-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1G8M0z64lFJ0NDo9Pf-TmUdxqsETp0lzT/view?usp=drive_link"
+                            class="card-link">[22224]-2023-Winter-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1A8nvsIasJeJ8TChC2Jgj062RFZP1u5g_/view?usp=drive_link"
+                            class="card-link">[22224]-2023-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1MiEE6Q1SbPj8U8Pdak1vq6dYhtqP64dM/view?usp=drive_link"
+                            class="card-link">[22224]-2022-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1qHqmwZnITeXh11uWO9RTfuOtS5aP6OpX/view?usp=drive_link"
+                            class="card-link">[22224]-2019-Winter-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1B4_88M5Ya8cc0Qr2oSEihSnN-7k8co1m/view?usp=drive_link"
+                            class="card-link">[22224]-2019-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1DTx17TtPWd6w4kbxoWv5hC7UDYzWj_3H/view?usp=drive_link"
+                            class="card-link">[22224]-2018-Winter-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1DIHJ0DozqG76xjFK-s_vkDVvWdxL2q0U/view?usp=drive_link"
+                            class="card-link">[22224]-2018-Summer-question-paper</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="card resource-card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Previous Year Model Answers</h4>
+                        <p> <a href="https://drive.google.com/file/d/1X8EpaCa4nZ5Cyv4uYGfpQeroVI5YGUJo/view?usp=drive_link"
+                            class="card-link">[22224]-2022-Summer-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/1Vzs4V92CUvnM_wpM7oVjQaTWM2ERT9Nd/view?usp=drive_link"
+                            class="card-link">[22224]-2019-Winter-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/1WFMWEv1y0O0Z7RgvvrGtNlA9xMtsPe3E/view?usp=drive_link"
+                            class="card-link">[22224]-2019-Summer-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/1_1xPDONg9qpxRqp9gCIQmuY4t6XbYwua/view?usp=drive_link"
+                            class="card-link">[22224]-2018-Winter-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/1P6wu5KcXYDvBm3k7LLLsYu6f1Q3JqNd2/view?usp=drive_link"
+                            class="card-link">[22224]-2018-Summer-model-answer-paper</a> </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="card resource-card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Notes</h4>
+                        <p class="text-muted fst-italic">Coming soon! Check back later for study notes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subject 22224 -->
+            <div class="col-12">
+                <h3 class="subject-title" data-aos="fade-right">22226</h3>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="card resource-card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Previous Year Question Papers</h4>
+                        <p><a href="https://drive.google.com/file/d/16VuOPFOI7hcuu-4JVW3pbz995t_fIgP2/view?usp=drive_link"
+                            class="card-link">[22226]-2024-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/10sz0NNS_6DwP800ibetAQAKoAhXKTSo6/view?usp=drive_link"
+                            class="card-link">[22226]-2023-Winter-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1tZxSNynsG2pw2tLtYuhkxIvW74gw6pTk/view?usp=drive_link"
+                            class="card-link">[22226]-2023-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1Tq-Bo8Ay7yl4hf9oibbXvhTtu0MK5nI1/view?usp=drive_link"
+                            class="card-link">[22226]-2022-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/193fXfWO25gUUga0xi4au5qmkK1ad2uYX/view?usp=drive_link"
+                            class="card-link">[22226]-2019-Winter-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1iRr9bBKWbIh3dZGxDmAQoRyfWVUAtyz8/view?usp=drive_link"
+                            class="card-link">[22226]-2019-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1IsKhcDQh7XyBjMXFbadn3_ECsmslh6AO/view?usp=drive_link"
+                            class="card-link">[22226]-2018-Winter-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1T2lzjgr2dbWNPWrtr6M9AwSamjwA5DMA/view?usp=drive_link"
+                            class="card-link">[22226]-2018-Summer-question-paper</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="card resource-card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Previous Year Model Answers</h4>
+                        <p> <a href="https://drive.google.com/file/d/1HlL0EIUCy3EGz_ivnIIK0oEl0UtPWkkD/view?usp=drive_link"
+                            class="card-link">[22226]-2022-Winter-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/14Wz_f3-_lrNGtR8z0KL0CwH2hIAfgXeu/view?usp=drive_link"
+                            class="card-link">[22226]-2022-Summer-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/1Mg3DpdbXKWYIIW8HOU2bnj31RW-jj6ad/view?usp=drive_link"
+                            class="card-link">[22226]-2019-Winter-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/1yRwS4OqLNvmZcogYmvjsctYvUq-wucs8/view?usp=drive_link"
+                            class="card-link">[22226]-2019-Summer-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/109E4mn5Gx7wH78i83ulJ1i9PchmCorwa/view?usp=drive_link"
+                            class="card-link">[22226]-2018-Winter-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/1gRNoG6xL8A7AIBGpt412U7bNP4Fv1Gii/view?usp=drive_link"
+                            class="card-link">[22226]-2018-Summer-model-answer-paper</a> </p>
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="card resource-card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Notes</h4>
+                        <p class="text-muted fst-italic">Coming soon! Check back later for study notes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Subject 22215 -->
+            <div class="col-12">
+                <h3 class="subject-title" data-aos="fade-right">22215</h3>
+            </div>
+            
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                <div class="card resource-card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Previous Year Question Papers</h4>
+                        <p><a href="https://drive.google.com/file/d/1Vm5eSsYDRehugaOZNc7FeUJaYm4CeLrU/view?usp=drive_link"
+                            class="card-link">[22215]-2024-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1J2YgSrQbqzoz_nFSGo5veMV_DxWgNCVW/view?usp=drive_link"
+                            class="card-link">[22215]-2023-Winter-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1gDL-KLgs84dZNvM3GzIxcOQcYxvU-ypJ/view?usp=drive_link"
+                            class="card-link">[22215]-2023-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1VXWybL_XSlCeMqs_9sCQOzd5TDaN-qXz/view?usp=drive_link"
+                            class="card-link">[22215]-2022-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1DsYK40GF2__XPm-PuHrkwqMc2wJbheXx/view?usp=drive_link"
+                            class="card-link">[22215]-2019-Winter-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1ZmawmfnxYHAXLLJCRFQ5suxJimpeh8kQ/view?usp=drive_link"
+                            class="card-link">[22215]-2019-Summer-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1chdgq-ZH4eCfb2uc4m9rJtaO852izdzi/view?usp=drive_link"
+                            class="card-link">[22215]-2018-Winter-question-paper</a></p>
+                    <p><a href="https://drive.google.com/file/d/1RdPX9XJInUfsZ0eV13C5vKDeLAuKLd4z/view?usp=drive_link"
+                            class="card-link">[22215]-2018-Summer-question-paper</a></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                <div class="card resource-card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Previous Year Model Answers</h4>
+                        <p> <a href="https://drive.google.com/file/d/1OgtTIAaVLzd-oLgZkWRPE1pVRJvhBZqN/view?usp=drive_link"
+                            class="card-link">[22215]-2019-Winter-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/1IOsQ1eoQpx4Dx4kjOqinQOs4HuUJ3w37/view?usp=drive_link"
+                            class="card-link">[22215]-2018-Winter-model-answer-paper</a> </p>
+                    <p> <a href="https://drive.google.com/file/d/11NGYAGeMrExX98NlrRjzGXyuug3mJchb/view?usp=drive_link"
+                            class="card-link">[22215]-2018-Summer-model-answer-paper</a> </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                <div class="card resource-card h-100">
+                    <div class="card-body">
+                        <h4 class="card-title">Notes</h4>
+                        <p class="text-muted fst-italic">Coming soon! Check back later for study notes.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    
+    {% include 'components/footer.html' %}
+
+
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+        
+        // Theme toggle function
+        function toggleTheme() {
+            const body = document.body;
+            if (body.getAttribute('data-bs-theme') === 'dark') {
+                body.setAttribute('data-bs-theme', 'light');
+            } else {
+                body.setAttribute('data-bs-theme', 'dark');
+            }
+        }
+    </script>
+</body>
+</html>

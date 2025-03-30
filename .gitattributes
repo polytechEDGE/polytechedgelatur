@@ -1,0 +1,2 @@
+models/college_predictor_model.pkl filter=lfs diff=lfs merge=lfs -text
+static/videos/open.mov filter=lfs diff=lfs merge=lfs -text

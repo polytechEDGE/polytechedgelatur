@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PolytechEDGE Portal - Access comprehensive study materials, notes, previous year papers, and manuals for all polytechnic courses">
+  <title>Polytech Portal - PolytechEDGE</title>
+  
+  <!-- CSS Libraries -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/polytechEdge.css') }}">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/polytechEdge.css') }}">
+</head>
+
+<body data-bs-theme="dark">
+  <!-- Include the reusable header/navbar component -->
+  {% include 'components/header.html' %}
+
+  <!-- Hero Section -->
+  <div class="hero" style="height: 60vh;">
+    <img src="{{ url_for('static', filename='images/cc4.jpg') }}" alt="Polytechnic Education" class="w-100">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 data-aos="fade-down">Polytech Portal</h1>
+      <p data-aos="fade-up" data-aos-delay="200">Access comprehensive study materials, notes, previous year papers, and manuals for all polytechnic courses</p>
+      <a href="http://127.0.0.1:5000/K & I scheme" class="btn hero-btn">Browse Materials <i class="fas fa-arrow-right ms-2"></i></a>
+    </div>
+  </div>
+
+  <div class="container my-5 py-5">
+    <div class="text-center mb-5" data-aos="fade-up">
+      <h2 class="fw-bold mb-3">Resources We Offer</h2>
+      <p class="text-muted mx-auto" style="max-width: 700px;">Empower your polytechnic journey with our comprehensive collection of academic resources designed to enhance your learning experience and boost your academic performance.</p>
+    </div>
+
+    <!-- Feature Cards -->
+    <div class="row g-4 mb-5">
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+        <div class="card h-100">
+          <div class="card-body text-center p-4">
+            <div class="feature-icon mb-4">
+              <i class="fas fa-file-alt"></i>
+            </div>
+            <h4 class="card-title mb-3">Question Papers</h4>
+            <p class="card-text mb-4">Access previous year question papers with model answers to prepare effectively for your exams.</p>
+            <a href="http://127.0.0.1:5000/K & I scheme" class="btn btn-outline-primary rounded-pill">Browse Papers <i class="fas fa-arrow-right ms-1"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+        <div class="card h-100">
+          <div class="card-body text-center p-4">
+            <div class="feature-icon mb-4" style="background: linear-gradient(135deg, var(--success-color), #2b9348);">
+              <i class="fas fa-book"></i>
+            </div>
+            <h4 class="card-title mb-3">Study Notes</h4>
+            <p class="card-text mb-4">Get comprehensive notes and video lectures for all subjects to enhance your understanding.</p>
+            <a href="http://127.0.0.1:5000/K & I scheme" class="btn btn-outline-success rounded-pill">View Notes <i class="fas fa-arrow-right ms-1"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+        <div class="card h-100">
+          <div class="card-body text-center p-4">
+            <div class="feature-icon mb-4" style="background: linear-gradient(135deg, var(--info-color), #0096c7);">
+              <i class="fas fa-laptop-code"></i>
+            </div>
+            <h4 class="card-title mb-3">Projects & Manuals</h4>
+            <p class="card-text mb-4">Explore CPP projects, microproject topics, and solved laboratory manuals for hands-on learning.</p>
+            <a href="http://127.0.0.1:5000/K & I scheme" class="btn btn-outline-info rounded-pill">Explore Projects <i class="fas fa-arrow-right ms-1"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Course Materials -->
+    <div class="my-5 py-3">
+      <div class="row featurette d-flex justify-content-center align-items-center my-5" data-aos="fade-up">
+        <div class="col-md-7">
+          <h2 class="featurette-heading fw-bold mb-4">Question Papers & Model Answers</h2>
+          <p class="lead">Our team is committed to delivering a comprehensive package that includes previous
+            year question papers, meticulously crafted model answers, and additional sample question papers.
+            This resource not only enhances your understanding but also significantly elevates your scoring
+            potential.</p>
+          <a href="http://127.0.0.1:5000/K & I scheme" class="btn btn-primary mt-3">Access Question Papers</a>
+        </div>
+        <div class="col-md-5">
+          <img class="img-fluid rounded-4 shadow" src="{{ url_for('static', filename='images/pp2.jpg') }}" alt="Question Papers">
+        </div>
+      </div>
+      
+      <hr class="my-5" style="opacity: 0.1;">
+      
+      <div class="row featurette d-flex justify-content-center align-items-center my-5" data-aos="fade-up">
+        <div class="col-md-5 order-md-1">
+          <img class="img-fluid rounded-4 shadow" src="{{ url_for('static', filename='images/pp1.jpg') }}" alt="Study Notes">
+        </div>
+        <div class="col-md-7 order-md-2">
+          <h2 class="featurette-heading fw-bold mb-4">Notes & Video Lectures</h2>
+          <p class="lead">Our curated notes and concise video lectures provide a streamlined path to understanding complex polytechnic subjects. Each resource is carefully created by experienced educators to ensure clarity and comprehensiveness.</p>
+          <a href="http://127.0.0.1:5000/K & I scheme" class="btn btn-success mt-3">Browse Study Materials</a>
+        </div>
+      </div>
+      
+      <hr class="my-5" style="opacity: 0.1;">
+      
+      <div class="row featurette d-flex justify-content-center align-items-center my-5" data-aos="fade-up">
+        <div class="col-md-7">
+          <h2 class="featurette-heading fw-bold mb-4">Projects & Solved Manuals</h2>
+          <p class="lead">We offer a comprehensive collection of CPP projects, microproject topics, and solution manuals to enhance your practical learning experience. Feel free to explore our resources and deepen your understanding of important concepts through hands-on applications.</p>
+          <a href="http://127.0.0.1:5000/K & I scheme" class="btn btn-info text-white mt-3">Explore Projects</a>
+        </div>
+        <div class="col-md-5">
+          <img class="img-fluid rounded-4 shadow" src="{{ url_for('static', filename='images/pp3.jpg.png') }}" alt="Projects and Manuals">
+        </div>
+      </div>
+    </div>
+
+    <!-- Browse by Branch -->
+    <div class="my-5 py-5" data-aos="fade-up">
+      <div class="text-center mb-5">
+        <h2 class="fw-bold mb-3">Browse by Branch</h2>
+        <p class="text-muted mx-auto" style="max-width: 700px;">Select your engineering branch to access field-specific study materials, question papers, and resources.</p>
+      </div>
+      
+      <div class="row g-4">
+        <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="100">
+          <a href="http://127.0.0.1:5000/K & I scheme" class="text-decoration-none">
+            <div class="card h-100 text-center p-4">
+              <div class="feature-icon mb-3" style="width: 60px; height: 60px; font-size: 1.5rem; background: linear-gradient(135deg, #fd7e14, #e85d04);">
+                <i class="fas fa-building"></i>
+              </div>
+              <h5 class="mb-0">Civil Engineering</h5>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="150">
+          <a href="http://127.0.0.1:5000/K & I scheme" class="text-decoration-none">
+            <div class="card h-100 text-center p-4">
+              <div class="feature-icon mb-3" style="width: 60px; height: 60px; font-size: 1.5rem; background: linear-gradient(135deg, #3a86ff, #0077b6);">
+                <i class="fas fa-laptop-code"></i>
+              </div>
+              <h5 class="mb-0">Computer Engineering</h5>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="200">
+          <a href="http://127.0.0.1:5000/K & I scheme" class="text-decoration-none">
+            <div class="card h-100 text-center p-4">
+              <div class="feature-icon mb-3" style="width: 60px; height: 60px; font-size: 1.5rem; background: linear-gradient(135deg, #ffbe0b, #fb8500);">
+                <i class="fas fa-bolt"></i>
+              </div>
+              <h5 class="mb-0">Electrical Engineering</h5>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="250">
+          <a href="http://127.0.0.1:5000/K & I scheme" class="text-decoration-none">
+            <div class="card h-100 text-center p-4">
+              <div class="feature-icon mb-3" style="width: 60px; height: 60px; font-size: 1.5rem; background: linear-gradient(135deg, #4cc9f0, #4361ee);">
+                <i class="fas fa-microchip"></i>
+              </div>
+              <h5 class="mb-0">Electronics & Telecom</h5>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="300">
+          <a href="http://127.0.0.1:5000/K & I scheme" class="text-decoration-none">
+            <div class="card h-100 text-center p-4">
+              <div class="feature-icon mb-3" style="width: 60px; height: 60px; font-size: 1.5rem; background: linear-gradient(135deg, #7209b7, #560bad);">
+                <i class="fas fa-database"></i>
+              </div>
+              <h5 class="mb-0">Information Technology</h5>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="350">
+          <a href="http://127.0.0.1:5000/K & I scheme" class="text-decoration-none">
+            <div class="card h-100 text-center p-4">
+              <div class="feature-icon mb-3" style="width: 60px; height: 60px; font-size: 1.5rem; background: linear-gradient(135deg, #2b9348, #007f5f);">
+                <i class="fas fa-cogs"></i>
+              </div>
+              <h5 class="mb-0">Mechanical Engineering</h5>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="400">
+          <a href="http://127.0.0.1:5000/K & I scheme" class="text-decoration-none">
+            <div class="card h-100 text-center p-4">
+              <div class="feature-icon mb-3" style="width: 60px; height: 60px; font-size: 1.5rem; background: linear-gradient(135deg, #f72585, #b5179e);">
+                <i class="fas fa-microchip"></i>
+              </div>
+              <h5 class="mb-0">Electronics Engineering</h5>
+            </div>
+          </a>
+        </div>
+        <div class="col-md-4 col-lg-3" data-aos="fade-up" data-aos-delay="450">
+          <a href="http://127.0.0.1:5000/K & I scheme" class="text-decoration-none">
+            <div class="card h-100 text-center p-4">
+              <div class="feature-icon mb-3" style="width: 60px; height: 60px; font-size: 1.5rem; background: linear-gradient(135deg, #9d4edd, #7b2cbf);">
+                <i class="fas fa-graduation-cap"></i>
+              </div>
+              <h5 class="mb-0">All Branches</h5>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer mt-5 pt-5">
+    <div class="footer-wave"></div>
+    <div class="container py-4">
+        <div class="row">
+            <div class="col-lg-4 mb-5">
+                <a class="d-flex align-items-center mb-4 text-decoration-none" href="/">
+                    <img src="static/images/logo.jpg" width="50" height="50" class="d-block me-3 rounded-circle">
+                    <h4 class="fw-bold text-white m-0">PolytechEDGE</h4>
+                </a>
+                <p class="mb-4">Empowering polytechnic students with resources, guidance, and tools for a successful academic and professional journey.</p>
+                <div class="d-flex gap-3">
+                    <a href="https://www.facebook.com/share/17wPBuiLW6/" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://x.com/PolytechEDGE?t=e47VnCCoXYq3VFCIsXW7Lw&s=09" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/polytechedge?igsh=MWhlenNzNGhwd2R5Mg==" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/company/polytechedge/" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://youtube.com/@polytechedge?si=pJECTJuGKDkzvF3S" class="social-icon"><i class="fab fa-youtube"></i></a>
+                    <a href="https://t.me/+_fOG3H3C9Cs2OGFl" class="social-icon"><i class="fab fa-telegram"></i></a>
+                </div>
+            </div>
+            <div class="col-6 col-lg-2 mb-4">
+                <h5 class="fw-bold mb-4">Quick Links</h5>
+                <a href="index.html" class="footer-link"><i class="fas fa-home me-2"></i>Home</a>
+                <a href="about.html" class="footer-link"><i class="fas fa-info-circle me-2"></i>About Us</a>
+                <a href="contact.html" class="footer-link"><i class="fas fa-envelope me-2"></i>Contact Us</a>
+                <a href="support.html" class="footer-link"><i class="fas fa-headset me-2"></i>Support</a>
+            </div>
+            <div class="col-6 col-lg-2 mb-4">
+                <h5 class="fw-bold mb-4">Services</h5>
+                <a href="http://127.0.0.1:5000/portal" class="footer-link"><i class="bi bi-journal-text me-2"></i>Polytech Portal</a>
+                <a href="http://127.0.0.1:5000/guidance" class="footer-link"><i class="bi bi-compass me-2"></i>Career Guidance</a>
+                <a href="http://127.0.0.1:5000/predictor" class="footer-link"><i class="bi bi-bar-chart me-2"></i>College Predictor</a>
+                <a href="http://127.0.0.1:5000/job" class="footer-link"><i class="bi bi-briefcase me-2"></i>Job Roadmap</a>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <h5 class="fw-bold mb-4">Stay Updated</h5>
+                <p class="mb-4">Subscribe to our newsletter for the latest updates and resources.</p>
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control" placeholder="Your email address" aria-label="Your email address">
+                    <button class="btn btn-primary" type="button">Subscribe</button>
+                </div>
+            </div>
+        </div>
+        <hr class="mt-4 mb-4" style="border-color: rgba(255,255,255,0.1);">
+        <div class="row">
+            <div class="col-md-6 text-center text-md-start">
+                <p class="mb-0">&copy; 2025 PolytechEDGE. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end">
+                <p class="mb-0">Designed and built by PolytechEDGE.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+  <!-- AOS Script -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({
+      duration: 1000, // Animation duration in ms
+      once: false, // Run animation once
+    });
+    
+    // Theme toggle function
+    function toggleTheme() {
+      var element = document.body;
+      element.dataset.bsTheme = element.dataset.bsTheme == "dark" ? "light" : "dark";
+      
+      // Store theme preference in localStorage
+      localStorage.setItem('theme', element.dataset.bsTheme);
+    }
+
+    // Load saved theme
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.body.dataset.bsTheme = savedTheme;
+      }
+    });
+  </script>
+</body>
+</html>

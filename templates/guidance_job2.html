@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="PolytechEDGE - Get personalized job roadmaps and career guidance for polytechnic students">
+    <title>Job Roadmap - PolytechEDGE</title>
+
+    <!-- CSS libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/polytechEdge.css') }}">
+
+    <style>
+        /* TESTIMONIAL SLIDER */
+        .testimonial-container {
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .testimonial-track {
+            display: flex;
+            transition: transform 0.5s ease;
+        }
+
+        .testimonial-slide {
+            flex: 0 0 100%;
+        }
+
+        .testimonial-card {
+            background: var(--bs-tertiary-bg);
+            border-radius: 16px;
+            border-left: 5px solid var(--bs-primary);
+            padding: 2rem;
+            margin: 1rem;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .testimonial-card::before {
+            content: '\201C';
+            font-family: Arial, sans-serif;
+            position: absolute;
+            top: 10px;
+            left: 15px;
+            font-size: 5rem;
+            color: rgba(var(--bs-primary-rgb), 0.2);
+            line-height: 1;
+        }
+
+        .testimonial-navigation {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .testimonial-nav-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--bs-tertiary-bg);
+            border: 2px solid var(--bs-primary);
+            color: var(--bs-primary);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-nav-btn:hover {
+            background: var(--bs-primary);
+            color: white;
+        }
+
+        /* JOB ROADMAP FORM */
+        .career-form {
+            background: var(--bs-tertiary-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .career-form::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, rgba(var(--bs-primary-rgb), 0.2), transparent);
+            border-radius: 0 0 0 100%;
+            z-index: -1;
+        }
+        
+        .career-form::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, transparent, rgba(var(--bs-success-rgb), 0.2));
+            border-radius: 0 100% 0 0;
+            z-index: -1;
+        }
+
+        .career-form label {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-control:focus {
+            border-color: var(--bs-primary);
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+        }
+
+        .submit-btn {
+            padding: 12px 30px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .feature-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+            background: var(--bs-tertiary-bg);
+            border: 1px solid rgba(var(--bs-primary-rgb), 0.1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.15);
+            border-color: rgba(var(--bs-primary-rgb), 0.3);
+        }
+
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(var(--bs-primary-rgb), 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
+
+        .feature-icon i {
+            font-size: 2.2rem;
+            color: var(--bs-primary);
+        }
+
+        /* HERO SECTION */
+        .hero-section {
+            background: linear-gradient(120deg, rgba(13, 110, 253, 0.9), rgba(25, 135, 84, 0.9)), url('/static/images/career-hero.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 8rem 0;
+            position: relative;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .hero-stat {
+            text-align: center;
+            padding: 0.5rem 1.5rem;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s ease;
+        }
+        
+        .hero-stat:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .hero-stat .number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0;
+            line-height: 1;
+        }
+
+        .hero-stat .label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        .overlay-shape {
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 150px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="rgba(255,255,255,1)" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,170.7C960,160,1056,192,1152,197.3C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+            background-size: cover;
+            background-repeat: no-repeat;
+            z-index: 1;
+        }
+
+        /* Additional form styling */
+        .animated-dropdown {
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+        
+        .animated-dropdown:focus {
+            box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+            border-color: var(--bs-primary);
+        }
+        
+        .input-group-text {
+            background: var(--bs-primary);
+            color: white;
+            border: none;
+        }
+        
+        /* Theme Toggle */
+        .mode-toggle {
+            width: 50px;
+            height: 26px;
+            background-color: #333;
+            border-radius: 20px;
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6px;
+        }
+
+        .toggle-icon {
+            font-size: 12px;
+            color: #fff;
+            z-index: 1;
+        }
+
+        .toggle-thumb {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #fff;
+            border-radius: 50%;
+            left: 3px;
+            transition: all 0.3s ease;
+        }
+
+        [data-bs-theme="light"] .toggle-thumb {
+            left: calc(100% - 23px);
+        }
+
+        [data-bs-theme="light"] .sun {
+            color: #ffc107;
+        }
+
+        [data-bs-theme="dark"] .moon {
+            color: #adb5bd;
+        }
+    </style>
+</head>
+
+<body data-bs-theme="dark">
+    <!-- Include the reusable header/navbar component -->
+    {% include 'components/header.html' %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS library for animations -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+    <!-- Navigation Bar -->
+    
+    
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8 hero-content" data-aos="fade-right">
+                    <h1 class="display-4 fw-bold mb-4">Plan Your Career<br>Journey</h1>
+                    <p class="lead mb-4">Get a personalized roadmap to your dream job based on your skills, education,
+                        and career goals.</p>
+                    <a href="#job-form" class="btn btn-light btn-lg px-4 rounded-pill shadow-sm">
+                        Create Your Roadmap <i class="bi bi-arrow-right ms-2"></i>
+                    </a>
+                    <div class="hero-stats">
+                        <div class="hero-stat">
+                            <p class="number">100+</p>
+                            <p class="label">Career Paths</p>
+                        </div>
+                        <div class="hero-stat">
+                            <p class="number">20+</p>
+                            <p class="label">Industries</p>
+                        </div>
+                        <div class="hero-stat">
+                            <p class="number">5000+</p>
+                            <p class="label">Success Stories</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="overlay-shape"></div>
+    </section>
+
+    <!-- Job Roadmap Form Section -->
+    <section id="job-form" class="py-5">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-5">
+                <div class="col-lg-8" data-aos="fade-up">
+                    <h2 class="fw-bold mb-3">Create Your Career Roadmap</h2>
+                    <p class="text-muted mb-0">Enter your current education, skills, and dream job to get a personalized
+                        roadmap with steps to achieve your career goals.</p>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-8" data-aos="fade-up" data-aos-delay="200">
+                    <div class="career-form shadow-lg rounded position-relative overflow-hidden">
+                        <form id="jobForm" class="w-100">
+
+                            <!-- Skills Input -->
+                            <div class="input-group mb-3 shadow-sm p-3 bg-body rounded">
+                                <span class="input-group-text fw-bold"><i class="fas fa-tools me-2"></i>YOUR SKILLS</span>
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="skills" placeholder="Your Skills"
+                                        required>
+                                    <label for="skills">Skills</label>
+                                </div>
+                            </div>
+                            <p class="text-muted fst-italic ps-3 mb-4">🔹 Ex: Programming, AI/ML, Web Development</p>
+
+                            <!-- Branch Dropdown -->
+                            <div class="input-group mb-3 shadow-sm p-3 bg-body rounded">
+                                <span class="input-group-text fw-bold"><i class="fas fa-graduation-cap me-2"></i>YOUR BRANCH</span>
+                                <div class="form-floating">
+                                    <select class="form-select animated-dropdown" id="branch" required>
+                                        <option selected disabled>Select Your Branch</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Information Technology">Information Technology</option>
+                                        <option value="Electronics & Telecommunication">Electronics & Telecommunication
+                                        </option>
+                                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                        <option value="Civil Engineering">Civil Engineering</option>
+                                        <option value="Electrical Engineering">Electrical Engineering</option>
+                                        <option value="Automobile Engineering">Automobile Engineering</option>
+                                        <option value="Biomedical Engineering">Biomedical Engineering</option>
+                                        <option value="Chemical Engineering">Chemical Engineering</option>
+                                        <option value="Textile Engineering">Textile Engineering</option>
+                                        <option value="Plastic Engineering">Plastic Engineering</option>
+                                    </select>
+                                    <label for="branch">Branch</label>
+                                </div>
+                            </div>
+                            <p class="text-muted fst-italic ps-3 mb-4">🔹 Select your diploma branch</p>
+
+
+                            <!-- Interests Input -->
+                            <div class="input-group mb-3 shadow-sm p-3 bg-body rounded">
+                                <span class="input-group-text fw-bold"><i class="fas fa-star me-2"></i>YOUR INTERESTS</span>
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="interests" placeholder="Your Interests"
+                                        required>
+                                    <label for="interests">Interests</label>
+                                </div>
+                            </div>
+                            <p class="text-muted fst-italic ps-3 mb-4">🔹 Ex: Data Science, Cyber Security, AI</p>
+
+                            <!-- Desired Job Role Input -->
+                            <div class="input-group mb-3 shadow-sm p-3 bg-body rounded">
+                                <span class="input-group-text fw-bold"><i class="fas fa-briefcase me-2"></i>DESIRED JOB ROLE</span>
+                                <div class="form-floating">
+                                    <input type="text" class="form-control" id="jobrole" placeholder="Job Role"
+                                        required>
+                                    <label for="interests">Job Role</label>
+                                </div>
+                            </div>
+                            <p class="text-muted fst-italic ps-3 mb-4">🔹 Ex: Software Engineer, Data Analyst</p>
+
+                            <!-- Get Recommendations Button -->
+                            <div class="text-center my-4">
+                                <button type="submit" id="get-roadmap"
+                                    class="btn btn-primary btn-lg w-100 shadow-sm fw-bold rounded-pill">
+                                    <i class="fas fa-route me-2"></i> Get Your Career Roadmap
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Choose Us Section -->
+    <section class="py-5 bg-body-tertiary">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-5">
+                <div class="col-lg-8" data-aos="fade-up">
+                    <h2 class="fw-bold mb-3">Why Choose Our Job Roadmap</h2>
+                    <p class="text-muted">We provide detailed, actionable career roadmaps tailored to your specific
+                        goals and starting point.</p>
+                </div>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="feature-card p-4 text-center h-100">
+                        <div class="feature-icon mb-4">
+                            <i class="bi bi-person-check"></i>
+                        </div>
+                        <h4 class="mb-3 fw-bold">Personalized Guidance</h4>
+                        <p class="text-muted mb-0">Get a career plan tailored to your unique background, skills, and
+                            aspirations.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="feature-card p-4 text-center h-100">
+                        <div class="feature-icon mb-4" style="background: rgba(25, 135, 84, 0.1);">
+                            <i class="bi bi-bar-chart-steps" style="color: var(--bs-success);"></i>
+                        </div>
+                        <h4 class="mb-3 fw-bold">Actionable Steps</h4>
+                        <p class="text-muted mb-0">Learn exactly what skills to develop, certifications to pursue, and
+                            experiences to gain.</p>
+                    </div>
+                </div>
+                <div class="col-md-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="feature-card p-4 text-center h-100">
+                        <div class="feature-icon mb-4" style="background: rgba(220, 53, 69, 0.1);">
+                            <i class="bi bi-lightbulb" style="color: var(--bs-danger);"></i>
+                        </div>
+                        <h4 class="mb-3 fw-bold">Industry Insights</h4>
+                        <p class="text-muted mb-0">Benefit from insights based on current industry trends and employer
+                            expectations.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row justify-content-center text-center mb-5">
+                <div class="col-lg-8" data-aos="fade-up">
+                    <h2 class="fw-bold mb-3">Student Success Stories</h2>
+                    <p class="text-muted">Hear from polytechnic students who used our career roadmaps to launch successful careers</p>
+                </div>
+            </div>
+            
+            <div class="testimonial-container" data-aos="fade-up">
+                <div class="testimonial-track">
+                    <div class="testimonial-slide">
+                        <div class="testimonial-card">
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="rounded-circle overflow-hidden me-3" style="width: 60px; height: 60px;">
+                                    <img src="{{ url_for('static', filename='images/user1.jpg') }}" alt="User" class="img-fluid" onerror="this.src='https://ui-avatars.com/api/?name=Rahul+P&background=random'">
+                                </div>
+                                <div>
+                                    <h5 class="mb-0 fw-bold">Rahul Patil</h5>
+                                    <p class="mb-0 text-muted">Computer Engineering Graduate</p>
+                                </div>
+                            </div>
+                            <p class="mb-0">"The job roadmap gave me exactly what I needed to transition from my diploma to becoming a full-stack developer. The step-by-step guidance on skills to acquire and courses to take was invaluable."</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-navigation">
+                    <div class="testimonial-nav-btn prev-btn">
+                        <i class="fas fa-chevron-left"></i>
+                    </div>
+                    <div class="testimonial-nav-btn next-btn">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    
+    {% include 'components/footer.html' %}
+
+
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            once: true
+        });
+
+        // Theme toggle function
+        function toggleTheme() {
+            const body = document.body;
+            if (body.getAttribute('data-bs-theme') === 'dark') {
+                body.setAttribute('data-bs-theme', 'light');
+                document.querySelector('label[for="themeToggle"] i').classList.replace('bi-sun-fill', 'bi-moon-fill');
+            } else {
+                body.setAttribute('data-bs-theme', 'dark');
+                document.querySelector('label[for="themeToggle"] i').classList.replace('bi-moon-fill', 'bi-sun-fill');
+            }
+        }
+
+        // Testimonial slider functionality
+        let currentSlide = 0;
+        const track = document.querySelector('.testimonial-track');
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const prevBtn = document.querySelector('.prev-btn');
+        const nextBtn = document.querySelector('.next-btn');
+
+        function goToSlide(index) {
+            if (index < 0) index = slides.length - 1;
+            if (index >= slides.length) index = 0;
+            
+            currentSlide = index;
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                goToSlide(currentSlide - 1);
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                goToSlide(currentSlide + 1);
+            });
+        }
+
+        // Form submission
+        document.getElementById("jobForm").addEventListener("submit", async function (event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Collect user input
+            const skills = document.getElementById("skills").value;
+            const branch = document.getElementById("branch").value;
+            const interests = document.getElementById("interests").value;
+            const jobrole = document.getElementById("jobrole").value;
+
+            try {
+                let response = await fetch("/get_roadmap", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ skills, branch, interests, jobrole })
+                });
+
+                let result = await response.json();
+
+                if (result.error) throw new Error(result.error || "Failed to generate roadmap");
+
+                // Store response in sessionStorage and redirect to results page
+                sessionStorage.setItem("roadmap", JSON.stringify(result));
+                window.location.href = "/job_results";
+
+            } catch (error) {
+                alert("Network Error. Please try again.");
+                console.error("Request failed:", error);
+            }
+        });
+    </script>
+
+</body>
+
+</html>

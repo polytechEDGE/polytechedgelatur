@@ -1,0 +1,12 @@
+
+
+.center-box {
+    display: flex;
+    align-items: center;
+    /* Centers vertically */
+    justify-content: center;
+    /* (Optional) Centers horizontally */
+    height: 20px;
+    /* Set the height of the box */
+   
+}
