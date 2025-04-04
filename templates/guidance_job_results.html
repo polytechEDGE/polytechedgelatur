@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="PolytechEDGE - Get personalized job roadmaps and career guidance for polytechnic students">
+    <title>Job Roadmap Results - PolytechEDGE</title>
+
+    <!-- CSS libraries -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/polytechEdge.css') }}">
+
+    <style>
+        /* Job Results Page Specific Styles */
+        .results-hero {
+            background: linear-gradient(135deg, var(--bs-primary), #8e44ad);
+            padding: 5rem 0;
+            margin-bottom: 3rem;
+            position: relative;
+            overflow: hidden;
+            color: white;
+        }
+
+        .results-hero::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -100px;
+            right: -100px;
+        }
+
+        .results-hero::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+        }
+
+        .hero-stat-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .hero-stat-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.3);
+        }
+        
+        .hero-stat-card h4 {
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .job-card {
+            border-radius: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            height: 100%;
+            border: none;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            background: var(--bs-tertiary-bg);
+        }
+
+        .job-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 16px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .job-card .card-header {
+            background: var(--bs-primary);
+            color: white;
+            padding: 1.5rem 1.5rem 1rem;
+            border: none;
+        }
+
+        .job-card .card-body {
+            padding: 1.5rem;
+        }
+
+        .job-icon {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+        
+        .job-card:hover .job-icon {
+            transform: scale(1.1);
+        }
+
+        .compatibility-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--bs-primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 30px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .job-feature {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .job-feature i {
+            color: var(--bs-primary);
+            margin-right: 0.8rem;
+            font-size: 1.2rem;
+        }
+
+        .job-action {
+            padding: 1.2rem;
+            background: rgba(var(--bs-primary-rgb), 0.05);
+            border-top: 1px solid rgba(var(--bs-primary-rgb), 0.1);
+        }
+
+        .star-rating {
+            color: #ffc107;
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-card {
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            background: var(--bs-tertiary-bg);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .filter-heading {
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+            color: var(--bs-primary);
+            display: flex;
+            align-items: center;
+        }
+
+        .filter-heading i {
+            margin-right: 0.8rem;
+        }
+
+        .summary-box {
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--bs-primary), #6a11cb);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .summary-box::before {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            top: -50px;
+            right: -50px;
+        }
+
+        .summary-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .summary-count {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .animation-float {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* Roadmap Cards */
+        .roadmap-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+        
+        .job-role-heading {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--bs-primary);
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid rgba(var(--bs-primary-rgb), 0.2);
+            position: relative;
+        }
+        
+        .job-role-heading::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: var(--bs-primary);
+        }
+        
+        .roadmap-card {
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            border: none;
+            background: var(--bs-tertiary-bg);
+            margin-bottom: 2.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .roadmap-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .roadmap-card .card-body {
+            padding: 1.8rem;
+        }
+        
+        .roadmap-card .card-title {
+            font-weight: 700;
+            margin-bottom: 1.2rem;
+            font-size: 1.5rem;
+            color: var(--bs-primary);
+            border-bottom: 1px solid rgba(var(--bs-primary-rgb), 0.2);
+            padding-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .roadmap-card .card-title i {
+            width: 40px;
+            height: 40px;
+            background: rgba(var(--bs-primary-rgb), 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.8rem;
+            color: var(--bs-primary);
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .roadmap-card:hover .card-title i {
+            transform: rotate(360deg);
+            background: var(--bs-primary);
+            color: white;
+        }
+        
+        .roadmap-card .card-text {
+            line-height: 1.7;
+            color: var(--bs-body-color);
+        }
+        
+        .card-point {
+            margin-bottom: 0.8rem;
+            padding-left: 0.5rem;
+            border-left: 2px solid rgba(var(--bs-success-rgb), 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .card-point:hover {
+            border-left-color: var(--bs-success);
+            padding-left: 0.8rem;
+            background-color: rgba(var(--bs-success-rgb), 0.05);
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .card-point i {
+            color: var(--bs-success);
+            transition: all 0.3s ease;
+        }
+        
+        .card-point:hover i {
+            transform: scale(1.2);
+        }
+        
+        .roadmap-content {
+            padding: 0.5rem;
+        }
+        
+        .arrow-container {
+            text-align: center;
+            margin: -0.5rem 0 1.5rem;
+            position: relative;
+            height: 30px;
+        }
+        
+        .arrow-container i {
+            font-size: 1.5rem;
+            color: var(--bs-primary);
+            animation: bounce 1.5s infinite;
+            opacity: 0.7;
+        }
+        
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(10px);
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        /* Timeline Styles */
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 2px;
+            height: 100%;
+            background: var(--bs-primary);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 3rem;
+            width: 50%;
+            padding-right: 2rem;
+        }
+
+        .timeline-item:nth-child(even) {
+            margin-left: 50%;
+            padding-right: 0;
+            padding-left: 2rem;
+        }
+
+        .timeline-content {
+            background: var(--bs-tertiary-bg);
+            padding: 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            right: -10px;
+            top: 20px;
+            width: 20px;
+            height: 20px;
+            background: var(--bs-primary);
+            border-radius: 50%;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            right: auto;
+            left: -10px;
+        }
+
+        .timeline-date {
+            font-size: 0.9rem;
+            color: var(--bs-primary);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            color: var(--bs-secondary-color);
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+
+<body data-bs-theme="dark">
+    <!-- Include the reusable header/navbar component -->
+    {% include 'components/header.html' %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS library for animations -->
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+    <!-- Navigation Bar -->
+    
+    
+    <!-- Results Hero Section -->
+    <section class="results-hero">
+        <div class="container text-white">
+            <div class="row align-items-center">
+                <div class="col-lg-7" data-aos="fade-right">
+                    <h1 class="display-4 fw-bold mb-3">Your Career Roadmap</h1>
+                    <p class="lead mb-4">Based on your skills, interests, and career goals, we've created a
+                        personalized roadmap to help you achieve your professional aspirations.</p>
+                    <div class="d-flex gap-3">
+                        <div class="hero-stat-card">
+                            <h4>{{ skills|length if skills else "5+" }}</h4>
+                            <div class="text-uppercase opacity-75">Key Skills</div>
+                        </div>
+                        <div class="hero-stat-card">
+                            <h4>{{ steps|length if steps else "6" }}</h4>
+                            <div class="text-uppercase opacity-75">Action Steps</div>
+                        </div>
+                        <div class="hero-stat-card">
+                            <h4>{{ timeline if timeline else "1-2 Yrs" }}</h4>
+                            <div class="text-uppercase opacity-75">Timeline</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5 d-none d-lg-block" data-aos="fade-left">
+                    <div class="text-center animation-float">
+                        <img src="/static/images/career-illustration.svg" alt="Career Path" class="img-fluid"
+                            style="max-height: 300px;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2173/2173016.png'">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <!-- Job Role Heading -->
+                <h2 id="job-role" class="job-role-heading pulse text-center mb-5" data-aos="zoom-in">Your Career Roadmap</h2>
+                
+                <!-- Roadmap Container - Where the cards will be displayed -->
+                <div class="roadmap-container" id="roadmap-container"></div>
+                
+                <!-- Call to Action -->
+                
+                
+                <!-- Back Button -->
+                <div class="text-center mt-5" data-aos="fade-up">
+                    <a href="/guidance_job2" class="btn btn-outline-primary rounded-pill">
+                        <i class="fas fa-arrow-left me-2"></i> Back to Job Roadmap
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    
+    {% include 'components/footer.html' %}
+
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            easing: 'ease-in-out',
+            once: false
+        });
+        
+        // Theme toggle function
+        function toggleTheme() {
+            const body = document.body;
+            if (body.getAttribute('data-bs-theme') === 'dark') {
+                body.setAttribute('data-bs-theme', 'light');
+            } else {
+                body.setAttribute('data-bs-theme', 'dark');
+            }
+        }
+
+        function getMockRoadmapData() {
+            return {
+                jobrole: "Software Developer",
+                roadmap: "Education Requirements:\nBachelor's degree in Computer Science, Software Engineering, or related field.\nRelevant coursework in programming, data structures, algorithms, and software design.\nOnline courses and certifications can supplement formal education.\n\nSkill Development:\nProficiency in programming languages like JavaScript, Python, Java, or C++.\nFamiliarity with web technologies (HTML, CSS, frameworks like React or Angular).\nUnderstanding of database systems and SQL.\nKnowledge of version control systems like Git.\nProblem-solving and analytical thinking skills.\n\nExperience Building:\nSeek internships at tech companies or startups.\nContribute to open-source projects to build practical experience.\nParticipate in coding bootcamps for intensive skill development.\nJoin coding competitions and hackathons.\n\nCareer Progression:\nStart as a Junior Developer or Software Engineer.\nProgress to Senior Developer or Team Lead roles.\nAdvance to Software Architect, Technical Lead, or Engineering Manager.\nExplore specialized paths like DevOps, AI/ML, or cybersecurity.\n\nProfessional Development:\nJoin professional organizations like ACM or IEEE.\nAttend industry conferences and workshops.\nPursue advanced certifications in your specialization.\nDevelop leadership and communication skills.\n\nJob Search Strategy:\nCreate a tailored resume highlighting relevant skills and projects.\nBuild a professional LinkedIn profile and GitHub portfolio.\nNetwork with professionals through meetups and online communities.\nPrepare for technical interviews with coding practice and system design."
+            };
+        }
+
+        function displayRoadmap(roadmapData) {
+            if (!roadmapData) {
+                console.error("No roadmap data provided");
+                return;
+            }
+
+            // Set Job Role Heading with additional checks and console logging
+            const jobRoleElement = document.getElementById("job-role");
+            if (jobRoleElement) {
+                jobRoleElement.textContent = roadmapData.jobrole || "Career Roadmap";
+                // Make sure the element is visible
+                jobRoleElement.style.display = "block";
+                // Log for debugging
+                console.log("Setting job role to:", roadmapData.jobrole);
+            } else {
+                console.error("Job role element not found!");
+            }
+
+            const sections = [
+                { title: "Education Requirements", icon: "fas fa-graduation-cap" },
+                { title: "Skill Development", icon: "fas fa-brain" },
+                { title: "Experience Building", icon: "fas fa-laptop-code" },
+                { title: "Career Progression", icon: "fas fa-chart-line" },
+                { title: "Professional Development", icon: "fas fa-user-tie" },
+                { title: "Job Search Strategy", icon: "fas fa-search" }
+            ];
+
+            const roadmapContainer = document.getElementById("roadmap-container");
+            if (!roadmapContainer) {
+                console.error("Roadmap container element not found!");
+                return;
+            }
+
+            roadmapContainer.innerHTML = "";
+
+            try {
+                // Initialize content for each section
+                const sectionContents = {};
+                
+                // If no roadmap data is properly structured, create cards for each section with generic content
+                if (!roadmapData.roadmap || typeof roadmapData.roadmap !== 'string' || roadmapData.roadmap.trim() === '') {
+                    console.warn("Roadmap data is not properly formatted, using generic content");
+                    
+                    // Create a card for each predefined section
+                    sections.forEach((section, index) => {
+                        appendCard(section.title, section.icon, `${section.title}: Example content for ${section.title.toLowerCase()}`, index);
+                        
+                        // Add arrow between cards except after the last one
+                        if (index < sections.length - 1) {
+                            appendArrow();
+                        }
+                    });
+                    
+                    return;
+                }
+                
+                // Split roadmap text by section headers
+                const roadmapText = roadmapData.roadmap;
+                let remainingText = roadmapText;
+                
+                // Process each section in the predefined order
+                sections.forEach((section, index) => {
+                    let sectionContent = "";
+                    const sectionTitle = section.title;
+                    
+                    // Look for the section title in the text
+                    const sectionTitleIndex = remainingText.indexOf(sectionTitle);
+                    
+                    if (sectionTitleIndex !== -1) {
+                        // Extract the current section's content
+                        let endIndex;
+                        const nextSectionIndex = sections.findIndex((s, i) => i > index && remainingText.indexOf(s.title) > sectionTitleIndex);
+                        
+                        if (nextSectionIndex !== -1) {
+                            endIndex = remainingText.indexOf(sections[nextSectionIndex].title, sectionTitleIndex);
+                        } else {
+                            endIndex = remainingText.length;
+                        }
+                        
+                        sectionContent = remainingText.substring(sectionTitleIndex, endIndex).trim();
+                    } else {
+                        // If section title is not found exactly, try a less strict approach
+                        const sectionKeywords = sectionTitle.toLowerCase().split(' ');
+                        const lines = remainingText.split('\n');
+                        
+                        for (let i = 0; i < lines.length; i++) {
+                            const line = lines[i].trim().toLowerCase();
+                            if (sectionKeywords.every(keyword => line.includes(keyword.toLowerCase()))) {
+                                // Found a line matching all keywords of this section
+                                sectionContent = lines[i].trim();
+                                
+                                // Add subsequent lines until we hit another section
+                                for (let j = i + 1; j < lines.length; j++) {
+                                    const isAnotherSection = sections.some((s, secIndex) => 
+                                        secIndex !== index && s.title.toLowerCase().split(' ').every(
+                                            keyword => lines[j].toLowerCase().includes(keyword.toLowerCase())
+                                        )
+                                    );
+                                    
+                                    if (isAnotherSection) break;
+                                    sectionContent += '\n' + lines[j].trim();
+                                }
+                                
+                                break;
+                            }
+                        }
+                    }
+                    
+                    // If we still don't have content, create a generic placeholder
+                    if (!sectionContent) {
+                        sectionContent = `${sectionTitle}: Develop your ${sectionTitle.toLowerCase()} to advance in this career path.`;
+                    }
+                    
+                    // Create card for this section
+                    appendCard(sectionTitle, section.icon, sectionContent, index);
+                    
+                    // Add arrow between cards except after the last one
+                    if (index < sections.length - 1) {
+                        appendArrow();
+                    }
+                });
+
+                // Reinitialize AOS for newly added elements
+                if (typeof AOS !== 'undefined') {
+                    setTimeout(function () {
+                        AOS.refresh();
+                    }, 500);
+                }
+            } catch (error) {
+                console.error("Error processing roadmap data:", error);
+                roadmapContainer.innerHTML = "<p class='text-center alert alert-danger'>Error processing roadmap data.</p>";
+            }
+        }
+
+        function appendCard(title, icon, content, index) {
+            const roadmapContainer = document.getElementById("roadmap-container");
+            if (!roadmapContainer) return;
+
+            // Clean up content - remove the section title from content as we'll display it separately
+            let cleanContent = content;
+            if (content.toLowerCase().includes(title.toLowerCase())) {
+                cleanContent = content.substring(content.indexOf(':') + 1).trim();
+            }
+
+            // Format text with bullet points
+            const formattedContent = cleanContent.split("<br>")
+                .map(line => line.trim())
+                .filter(line => line)
+                .map(line => `<div class="card-point"><i class="fas fa-check-circle text-success me-2"></i>${line}</div>`)
+                .join("");
+
+            const cardHTML = `
+                <div class="card roadmap-card shadow-lg rounded-4" data-aos="${index % 2 === 0 ? 'fade-right' : 'fade-left'}" data-aos-delay="${index * 100}">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="${icon}"></i> ${title}</h5>
+                        <div class="card-text roadmap-content">${formattedContent}</div>
+                    </div>
+                </div>`;
+            roadmapContainer.innerHTML += cardHTML;
+        }
+
+        function appendArrow() {
+            const roadmapContainer = document.getElementById("roadmap-container");
+            if (!roadmapContainer) return;
+
+            const arrowHTML = `<div class="arrow-container" data-aos="fade-up"><i class="fas fa-chevron-down"></i></div>`;
+            roadmapContainer.innerHTML += arrowHTML;
+        }
+
+        // Load roadmap from sessionStorage with improved error handling
+        document.addEventListener("DOMContentLoaded", function () {
+            try {
+                let roadmapData = sessionStorage.getItem("roadmap");
+                console.log("Roadmap data from sessionStorage:", roadmapData);
+
+                if (roadmapData) {
+                    try {
+                        const parsedData = JSON.parse(roadmapData);
+                        console.log("Parsed roadmap data:", parsedData);
+                        displayRoadmap(parsedData);
+                    } catch (parseError) {
+                        console.error("Error parsing roadmap data:", parseError);
+                        // Use mock data as fallback
+                        const mockData = getMockRoadmapData();
+                        displayRoadmap(mockData);
+                    }
+                } else {
+                    console.warn("No roadmap data found in sessionStorage, using mock data instead");
+                    // Use mock data for demonstration purposes
+                    const mockData = getMockRoadmapData();
+                    displayRoadmap(mockData);
+
+                    // Optionally store the mock data in sessionStorage for future use
+                    try {
+                        sessionStorage.setItem("roadmap", JSON.stringify(mockData));
+                    } catch (storageError) {
+                        console.warn("Could not save mock data to sessionStorage:", storageError);
+                    }
+                }
+            } catch (error) {
+                console.error("Error loading roadmap data:", error);
+                // Use mock data as fallback
+                console.log("Using mock data as fallback");
+                displayRoadmap(getMockRoadmapData());
+            }
+
+            // Ensure AOS is initialized
+            if (typeof AOS !== 'undefined') {
+                AOS.init({
+                    duration: 800,
+                    easing: 'ease-in-out',
+                    once: false
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

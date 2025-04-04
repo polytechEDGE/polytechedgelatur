@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="PolytechEDGE College Predictor - Step 1: Enter your marks to get personalized college recommendations">
+  <title>Step 1 - Enter Your Marks | PolytechEDGE</title>
+  
+  <!-- CSS Libraries -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/polytechEdge.css') }}">
+  
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/polytechEdge.css') }}">
+  
+  <style>
+    .stepper-container { 
+      display: flex; 
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 0;
+    }
+    
+    .stepper { 
+      display: flex; 
+      align-items: center; 
+      gap: 1.5rem;
+      position: relative;
+      width: 80%;
+      max-width: 500px;
+    }
+    
+    .step { 
+      display: flex; 
+      flex-direction: column; 
+      align-items: center; 
+      gap: 0.5rem;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+    }
+    
+    .step-circle { 
+      width: 50px; 
+      height: 50px; 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      border-radius: 50%; 
+      background: linear-gradient(135deg, var(--primary-color), #1363df);
+      color: white; 
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(19, 99, 223, 0.3);
+      transition: all 0.3s ease;
+    }
+    
+    .step-circle.active {
+      transform: scale(1.1);
+      box-shadow: 0 6px 15px rgba(19, 99, 223, 0.4);
+    }
+    
+    .step-circle.completed { 
+      background: linear-gradient(135deg, var(--success-color), #2b9348);
+    }
+    
+    .step-circle.pending { 
+      background: linear-gradient(135deg, #6c757d, #495057);
+    }
+    
+    .step-line {
+      position: absolute;
+      top: 25px;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: #6c757d;
+      z-index: 1;
+    }
+    
+    .step-text {
+      font-weight: 500;
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .step.active .step-text {
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+    
+    .input-marks {
+      font-size: 2rem;
+      height: 70px;
+      text-align: center;
+      font-weight: 600;
+      letter-spacing: 2px;
+      color: var(--primary-color);
+      border: 2px solid rgba(19, 99, 223, 0.2);
+      border-radius: var(--border-radius);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .input-marks:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 5px 20px rgba(19, 99, 223, 0.15);
+    }
+    
+    .predict-btn {
+      padding: 12px 30px;
+      font-size: 1rem;
+      font-weight: 600;
+      border-radius: 50px;
+      background: linear-gradient(45deg, var(--primary-color), #1363df);
+      border: none;
+      color: white;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(58, 134, 255, 0.3);
+    }
+    
+    .predict-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(58, 134, 255, 0.5);
+    }
+  </style>
+</head>
+
+<body data-bs-theme="dark">
+    <!-- Include the reusable header/navbar component -->
+    {% include 'components/header.html' %}
+
+  <!-- Navbar -->
+  
+
+
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-10">
+        <div class="card shadow border-0" data-aos="fade-up">
+          <div class="card-body p-0">
+            <div class="row g-0">
+              <div class="col-md-5" style="background: linear-gradient(135deg, #3a86ff, #1363df); border-radius: var(--border-radius) 0 0 var(--border-radius);">
+                <div class="p-4 text-white h-100 d-flex flex-column justify-content-between">
+                  <div>
+                    <h3 class="fw-bold mb-4">College Predictor</h3>
+                    <p class="mb-4">Follow these simple steps to get personalized college recommendations based on your marks and preferences.</p>
+                  </div>
+                  
+                  <div class="mb-4">
+                    <div class="d-flex align-items-center mb-3">
+                      <div class="rounded-circle bg-white text-primary fw-bold d-flex align-items-center justify-content-center p-2" style="width: 30px; height: 30px;">1</div>
+                      <div class="ms-3">
+                        <h6 class="fw-bold mb-0">Enter Your Marks</h6>
+                        <small class="text-white-50">Provide your percentage marks</small>
+                      </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center mb-3">
+                      <div class="rounded-circle bg-white-50 fw-bold d-flex align-items-center justify-content-center p-2" style="width: 30px; height: 30px; opacity: 0.6;">2</div>
+                      <div class="ms-3">
+                        <h6 class="fw-bold mb-0 opacity-75">Set Your Preferences</h6>
+                        <small class="text-white-50">Choose your preferences</small>
+                      </div>
+                    </div>
+                    
+                    <div class="d-flex align-items-center">
+                      <div class="rounded-circle bg-white-50 fw-bold d-flex align-items-center justify-content-center p-2" style="width: 30px; height: 30px; opacity: 0.6;">3</div>
+                      <div class="ms-3">
+                        <h6 class="fw-bold mb-0 opacity-75">View Recommendations</h6>
+                        <small class="text-white-50">Get your college matches</small>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div>
+                    <a href="{{ url_for('predictor') }}" class="text-white text-decoration-none"><i class="fas fa-arrow-left me-2"></i> Back to Overview</a>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="col-md-7">
+                <div class="p-4 p-md-5">
+                  <h4 class="fw-bold mb-2">Enter Your Marks</h4>
+                  <p class="text-muted mb-4">Please enter your percentage marks to help us find the best colleges for you.</p>
+                  
+                  <form id="marksForm" action="/step1" method="POST">
+                    <div class="mb-4">
+                      <label for="marks" class="form-label fw-medium">Your Percentage (%)</label>
+                      <input type="number" class="form-control input-marks" id="marks" name="marks" min="0" max="100" step="0.01" required>
+                      <div class="form-text">Enter your percentage marks (0-100)</div>
+                    </div>
+                    
+                    <div class="alert alert-primary mb-4 d-flex align-items-center">
+                      <i class="fas fa-info-circle me-3 fs-4"></i>
+                      <p class="mb-0">Category-based relaxation will be applied in the next step.</p>
+                    </div>
+                    
+                    <button type="submit" class="btn predict-btn w-100">Continue to Next Step <i class="fas fa-arrow-right ms-2"></i></button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  
+    {% include 'components/footer.html' %}
+
+
+  <!-- JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    // Initialize AOS animation library
+    AOS.init({
+      duration: 800,
+      easing: 'ease-in-out',
+      once: true
+    });
+
+    // Theme toggle function
+    function toggleTheme() {
+      var element = document.body;
+      element.dataset.bsTheme = element.dataset.bsTheme == "dark" ? "light" : "dark";
+      
+      // Store theme preference in localStorage
+      localStorage.setItem('theme', element.dataset.bsTheme);
+    }
+
+    // Load saved theme
+    document.addEventListener('DOMContentLoaded', function() {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.body.dataset.bsTheme = savedTheme;
+      }
+    });
+
+    // Form validation
+    document.getElementById('marksForm').addEventListener('submit', function(event) {
+      const marksInput = document.getElementById('marks');
+      const marks = parseFloat(marksInput.value);
+      
+      if (isNaN(marks) || marks < 0 || marks > 100) {
+        event.preventDefault();
+        marksInput.classList.add('is-invalid');
+        
+        // Create error message if it doesn't exist
+        let errorDiv = document.getElementById('marks-error');
+        if (!errorDiv) {
+          errorDiv = document.createElement('div');
+          errorDiv.id = 'marks-error';
+          errorDiv.className = 'invalid-feedback';
+          errorDiv.textContent = 'Please enter a valid percentage between 0 and 100';
+          marksInput.parentNode.appendChild(errorDiv);
+        }
+      } else {
+        marksInput.classList.remove('is-invalid');
+        const errorDiv = document.getElementById('marks-error');
+        if (errorDiv) {
+          errorDiv.remove();
+        }
+      }
+    });
+  </script>
+</body>
+</html>

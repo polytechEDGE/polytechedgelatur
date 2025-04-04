@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PolytechEDGE - I-Scheme curriculum resources for polytechnic students">
+  <title>I-Scheme Resources | PolytechEDGE</title>
+
+  <!-- CSS libraries -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/polytechEdge.css') }}">
+
+  <style>
+    /* Branch Card Styles */
+    .branch-card {
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      height: 100%;
+      border: none;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      background: var(--bs-tertiary-bg);
+    }
+
+    .branch-card:hover {
+      transform: translateY(-15px);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .branch-card img {
+      height: 200px;
+      object-fit: cover;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+
+    .branch-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .card-body {
+      padding: 1.5rem;
+      text-align: center;
+    }
+
+    .card-title {
+      font-weight: 700;
+      margin-bottom: 1rem;
+      color: var(--bs-primary);
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.5rem;
+    }
+
+    .card-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 25%;
+      width: 50%;
+      height: 2px;
+      background: var(--bs-primary);
+      transition: all 0.3s ease;
+    }
+
+    .branch-card:hover .card-title::after {
+      width: 80%;
+      left: 10%;
+    }
+
+    .card-text {
+      color: var(--bs-secondary-color);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .arrow-icon {
+      width: 40px;
+      height: 40px;
+      background: rgba(var(--bs-primary-rgb), 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .branch-card:hover .arrow-icon {
+      background: var(--bs-primary);
+      transform: translateY(5px);
+    }
+
+    .branch-card:hover .arrow-icon img {
+      filter: brightness(5);
+    }
+
+    .hero-section {
+      background: linear-gradient(135deg, var(--bs-primary), #8e44ad);
+      padding: 5rem 0;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+      color: white;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      top: -100px;
+      right: -100px;
+    }
+
+    .hero-section::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      bottom: -50px;
+      left: -50px;
+    }
+
+    /* Footer Styles */
+    .footer-wave {
+      height: 50px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%230d6efd' fill-opacity='0.4' d='M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,224C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .footer {
+      background-color: var(--bs-dark);
+      color: white;
+    }
+
+    .footer-link {
+      display: block;
+      margin-bottom: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .footer-link:hover {
+      color: white;
+      transform: translateX(5px);
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(var(--bs-primary-rgb), 0.1);
+      border-radius: 50%;
+      margin-right: 8px;
+      transition: all 0.3s ease;
+      color: var(--bs-primary);
+    }
+
+    .social-icon:hover {
+      background: var(--bs-primary);
+      color: white;
+      transform: translateY(-5px);
+    }
+
+    .mode-toggle {
+      width: 50px;
+      height: 26px;
+      background-color: #333;
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px;
+    }
+
+    .toggle-icon {
+      font-size: 12px;
+      color: #fff;
+      z-index: 1;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
+      border-radius: 50%;
+      left: 3px;
+      transition: all 0.3s ease;
+    }
+
+    [data-bs-theme="light"] .toggle-thumb {
+      left: calc(100% - 23px);
+    }
+
+    [data-bs-theme="light"] .sun {
+      color: #ffc107;
+    }
+
+    [data-bs-theme="dark"] .moon {
+      color: #adb5bd;
+    }
+  </style>
+</head>
+
+<body data-bs-theme="dark">
+    <!-- Include the reusable header/navbar component -->
+    {% include 'components/header.html' %}
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS library for animations -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+  <!-- Navigation Bar -->
+  
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container text-white">
+      <div class="row align-items-center">
+        <div class="col-lg-7" data-aos="fade-right">
+          <h1 class="display-4 fw-bold mb-3">I-Scheme Resources</h1>
+          <p class="lead mb-4">I-Scheme curriculum is designed by MSBTE with industry inputs for practical skills, 
+          project-based learning, and career readiness in the digital age.</p>
+        </div>
+        <div class="col-lg-5 d-none d-lg-block" data-aos="fade-left">
+          <div class="text-center animation-float">
+            <img src="{{ url_for('static', filename='images/i.png') }}" alt="I-Scheme" class="img-fluid"
+              style="max-height: 300px;" onerror="this.src='https://cdn-icons-png.flaticon.com/512/2436/2436636.png'">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="container my-5">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+      <!-- Computer Engineering Card -->
+      <div class="col" data-aos="fade-up">
+        <div class="branch-card h-100">
+          <a href="{{ url_for('co_i_scheme') }}">
+            <img src="{{ url_for('static', filename='images/computer.webp') }}" class="card-img-top" alt="Computer Engineering">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">Computer Engineering</h5>
+            <p class="card-text">Designing, developing, and managing hardware and software
+              systems—shaping our digital landscape.</p>
+            <div class="arrow-icon">
+              <img src="{{ url_for('static', filename='images/uparrow.svg') }}" width="20" alt="Click">
+            </div>
+            <a href="{{ url_for('co_i_scheme') }}" class="btn btn-primary rounded-pill px-4">
+              View Resources <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Information Technology Card -->
+      <div class="col" data-aos="fade-up" data-aos-delay="100">
+        <div class="branch-card h-100">
+          <a href="{{ url_for('it_i_scheme') }}">
+            <img src="{{ url_for('static', filename='images/information technology.jpg') }}" class="card-img-top" alt="Information Technology">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">Information Technology</h5>
+            <p class="card-text">Integrating computer science, technology, and engineering to design,
+              develop, and maintain complex systems and networks.</p>
+            <div class="arrow-icon">
+              <img src="{{ url_for('static', filename='images/uparrow.svg') }}" width="20" alt="Click">
+            </div>
+            <a href="{{ url_for('it_i_scheme') }}" class="btn btn-primary rounded-pill px-4">
+              View Resources <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Electronics & Telecommunication Card -->
+      <div class="col" data-aos="fade-up" data-aos-delay="200">
+        <div class="branch-card h-100">
+          <a href="{{ url_for('ex_i_scheme') }}">
+            <img src="{{ url_for('static', filename='images/Electronics.jpg') }}" class="card-img-top" alt="Electronics Engineering">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">Electronics & Telecommunication</h5>
+            <p class="card-text">The practical application of electricity, shaping our
+              modern world through devices, circuits, and communication protocols.</p>
+            <div class="arrow-icon">
+              <img src="{{ url_for('static', filename='images/uparrow.svg') }}" width="20" alt="Click">
+            </div>
+            <a href="{{ url_for('etc_ischeme_page') }}" class="btn btn-primary rounded-pill px-4">
+              View Resources <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mechanical Engineering Card -->
+      <div class="col" data-aos="fade-up" data-aos-delay="100">
+        <div class="branch-card h-100">
+          <a href="{{ url_for('me_i_scheme') }}">
+            <img src="{{ url_for('static', filename='images/mec.jpg') }}" class="card-img-top" alt="Mechanical Engineering">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">Mechanical Engineering</h5>
+            <p class="card-text">The study of objects and systems in motion, shaping our
+              modern world through design and analysis of mechanical systems.</p>
+            <div class="arrow-icon">
+              <img src="{{ url_for('static', filename='images/uparrow.svg') }}" width="20" alt="Click">
+            </div>
+            <a href="{{ url_for('me_i_scheme') }}" class="btn btn-primary rounded-pill px-4">
+              View Resources <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Electrical Engineering Card -->
+      <div class="col" data-aos="fade-up" data-aos-delay="200">
+        <div class="branch-card h-100">
+          <a href="{{ url_for('ee_i_scheme') }}">
+            <img src="{{ url_for('static', filename='images/Electrical.jpg') }}" class="card-img-top" alt="Electrical Engineering">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">Electrical Engineering</h5>
+            <p class="card-text">The study, design, and application of electricity—powering
+              our modern world with innovative electrical systems and technologies.</p>
+            <div class="arrow-icon">
+              <img src="{{ url_for('static', filename='images/uparrow.svg') }}" width="20" alt="Click">
+            </div>
+            <a href="{{ url_for('ee_i_scheme') }}" class="btn btn-primary rounded-pill px-4">
+              View Resources <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Civil Engineering Card -->
+      <div class="col" data-aos="fade-up" data-aos-delay="300">
+        <div class="branch-card h-100">
+          <a href="{{ url_for('ce_i_scheme') }}">
+            <img src="{{ url_for('static', filename='images/civil.jpg') }}" class="card-img-top" alt="Civil Engineering">
+          </a>
+          <div class="card-body">
+            <h5 class="card-title">Civil Engineering</h5>
+            <p class="card-text">Designing, constructing, and maintaining our
+              infrastructure—bridges, roads, buildings, and more for sustainable development.</p>
+            <div class="arrow-icon">
+              <img src="{{ url_for('static', filename='images/uparrow.svg') }}" width="20" alt="Click">
+            </div>
+            <a href="{{ url_for('ce_i_scheme') }}" class="btn btn-primary rounded-pill px-4">
+              View Resources <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  
+    {% include 'components/footer.html' %}
+
+
+  <script>
+    // Initialize AOS animations
+    AOS.init({
+      duration: 800,
+      once: true
+    });
+    
+    // Theme toggle function
+    function toggleTheme() {
+      const body = document.body;
+      if (body.getAttribute('data-bs-theme') === 'dark') {
+        body.setAttribute('data-bs-theme', 'light');
+      } else {
+        body.setAttribute('data-bs-theme', 'dark');
+      }
+    }
+  </script>
+</body>
+
+</html>

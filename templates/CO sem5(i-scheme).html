@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PolytechEDGE - Computer Engineering Semester 5 I-Scheme resources for polytechnic students">
+  <title>CO Semester 5 I-Scheme | PolytechEDGE</title>
+
+  <!-- CSS libraries -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/polytechEdge.css') }}">
+
+  <style>
+    /* Resource Card Styles */
+    .resource-card {
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      height: 100%;
+      border: none;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      background: var(--bs-tertiary-bg);
+    }
+
+    .resource-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .resource-card .card-body {
+      padding: 1.5rem;
+    }
+
+    .resource-card .card-title {
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--bs-primary);
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.5rem;
+    }
+
+    .resource-card .card-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background: var(--bs-primary);
+      transition: all 0.3s ease;
+    }
+
+    .resource-card:hover .card-title::after {
+      width: 100%;
+    }
+
+    .resource-link {
+      display: block;
+      padding: 8px 0;
+      color: var(--bs-body-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(var(--bs-secondary-rgb), 0.1);
+    }
+
+    .resource-link:hover {
+      color: var(--bs-primary);
+      transform: translateX(5px);
+    }
+
+    .resource-link i {
+      margin-right: 8px;
+      color: var(--bs-primary);
+    }
+
+    .resource-link:last-child {
+      border-bottom: none;
+    }
+
+    .hero-section {
+      background: linear-gradient(135deg, var(--bs-primary), #8e44ad);
+      padding: 5rem 0;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+      color: white;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      top: -100px;
+      right: -100px;
+    }
+
+    .hero-section::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      bottom: -50px;
+      left: -50px;
+    }
+
+    /* Footer Styles */
+    .footer-wave {
+      height: 50px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%230d6efd' fill-opacity='0.4' d='M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,224C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .footer {
+      background-color: var(--bs-dark);
+      color: white;
+    }
+
+    .footer-link {
+      display: block;
+      margin-bottom: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .footer-link:hover {
+      color: white;
+      transform: translateX(5px);
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(var(--bs-primary-rgb), 0.1);
+      border-radius: 50%;
+      margin-right: 8px;
+      transition: all 0.3s ease;
+      color: var(--bs-primary);
+    }
+
+    .social-icon:hover {
+      background: var(--bs-primary);
+      color: white;
+      transform: translateY(-5px);
+    }
+
+    .mode-toggle {
+      width: 50px;
+      height: 26px;
+      background-color: #333;
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px;
+    }
+
+    .toggle-icon {
+      font-size: 12px;
+      color: #fff;
+      z-index: 1;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
+      border-radius: 50%;
+      left: 3px;
+      transition: all 0.3s ease;
+    }
+
+    [data-bs-theme="light"] .toggle-thumb {
+      left: calc(100% - 23px);
+    }
+
+    [data-bs-theme="light"] .sun {
+      color: #ffc107;
+    }
+
+    [data-bs-theme="dark"] .moon {
+      color: #adb5bd;
+    }
+  </style>
+</head>
+
+<body data-bs-theme="dark">
+    <!-- Include the reusable header/navbar component -->
+    {% include 'components/header.html' %}
+
+  <!-- Theme toggle function -->
+    <script>
+    function toggleTheme() {
+      const body = document.body;
+      if (body.getAttribute('data-bs-theme') === 'dark') {
+        body.setAttribute('data-bs-theme', 'light');
+        localStorage.setItem('theme', 'light');
+      } else {
+        body.setAttribute('data-bs-theme', 'dark');
+        localStorage.setItem('theme', 'dark');
+      }
+    }
+
+    // Apply saved theme on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedTheme = localStorage.getItem('theme');
+      if (savedTheme) {
+        document.body.setAttribute('data-bs-theme', savedTheme);
+      }
+    });
+    </script>
+
+  <!-- Navigation -->
+  
+
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container text-center">
+      <h1 class="display-4 fw-bold mb-3" data-aos="fade-up">Computer Engineering Semester 5</h1>
+      <p class="lead mb-4" data-aos="fade-up" data-aos-delay="100">
+        Access I-Scheme resources for your fifth semester including previous year question papers, model answers, and notes
+      </p>
+      <a href="{{ url_for('portal') }}" class="btn btn-light btn-lg" data-aos="fade-up" data-aos-delay="200">
+        <i class="bi bi-arrow-left"></i> Back to Semesters
+      </a>
+    </div>
+  </section>
+
+  <div class="container my-5">
+    <!-- Subject 22509 Section -->
+    <div class="mb-5">
+      <h2 class="mb-4 border-bottom pb-2" data-aos="fade-up">22516</h2>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" data-aos="fade-up" data-aos-delay="100">
+        <!-- Previous Year Question Papers -->
+        <div class="col">
+          <div class="card resource-card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Previous Year Question Papers</h5>
+              
+              <p><a href="https://drive.google.com/file/d/15n3DudqDDyZ4YC9QB-3Doa_aRArKEp9R/view?usp=drive_link"
+                class="card-link">[22516]-2024-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/15xF3ZNAyhnjrUNYmMCp3fbjNUkgzao4v/view?usp=drive_link"
+                class="card-link">[22516]-2023-Winter-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/15zmBOrPVXjdiirpPul07MsYQDMHlx19K/view?usp=drive_link"
+                class="card-link">[22516]-2023-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/16062EXbVpmM4CygXcdcqaaqSVGV2Rp1x/view?usp=drive_link"
+                class="card-link">[22516]-2022-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/163oRBeOm2CqEK0gfuuSiNasLaRCXnqy1/view?usp=drive_link"
+                class="card-link">[22516]-2019-Winter-question-paper</a></p>
+
+             
+            </div>
+          </div>
+        </div>
+
+        <!-- Previous Year Model Answers -->
+        <div class="col">
+          <div class="card resource-card h-100">
+                <div class="card-body">
+              <h5 class="card-title">Previous Year Model Answers</h5>
+              <p><a href="https://drive.google.com/file/d/16EC0FLl7GbL4G2DezJfzQp0LMgJDjpAB/view?usp=drive_link"
+                class="card-link">[22516]-2022-Winter-model-answer-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/16ManWNKeoGXr89sOs4i9kCQ2deDAUsRm/view?usp=drive_link"
+                class="card-link">[22516]-2019-Winter-model-answer-paper</a></p>
+            </div>
+                </div>
+            </div>
+
+        <!-- Notes -->
+        <div class="col">
+          <div class="card resource-card h-100">
+                <div class="card-body">
+              <h5 class="card-title">Notes</h5>
+              <p class="text-muted">
+                <i class="bi bi-info-circle"></i> Notes will be available soon.
+              </p>
+            </div>
+          </div>
+        </div>
+                </div>
+            </div>
+
+    <!-- Subject 22510 Section -->
+    <div class="mb-5">
+      <h2 class="mb-4 border-bottom pb-2" data-aos="fade-up">22518</h2>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" data-aos="fade-up" data-aos-delay="100">
+        <!-- Previous Year Question Papers -->
+        <div class="col">
+          <div class="card resource-card h-100">
+                <div class="card-body">
+              <h5 class="card-title">Previous Year Question Papers</h5>
+              <p><a href="https://drive.google.com/file/d/16SGdCh4wzQu4bGbOx8PtQMcs4fb2VDre/view?usp=drive_link"
+                class="card-link">[22518]-2024-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/16WgY2FYjA5FaKK7_WhL-wLeJghmByWEU/view?usp=drive_link"
+                class="card-link">[22518]-2023-Winter-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/16XWVkFQI3Dqm060qxPJP2b9hp7aDlksM/view?usp=drive_link"
+                class="card-link">[22518]-2023-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/16YuErOVw0pXjwd9SCDJve19RgGj4rSL9/view?usp=drive_link"
+                class="card-link">[22518]-2022-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/16Zi0hPRBUB15Qn994_hLYf-HrxvxLfKY/view?usp=drive_link"
+                class="card-link">[22518]-2019-Winter-question-paper</a></p>
+            </div>
+                </div>
+            </div>
+
+        <!-- Previous Year Model Answers -->
+        <div class="col">
+          <div class="card resource-card h-100">
+                <div class="card-body">
+              <h5 class="card-title">Previous Year Model Answers</h5>
+              
+              <p><a href="https://drive.google.com/file/d/16fiDYviZuAnkUJyw6h4U9PuEBKfz-pif/view?usp=drive_link"
+                class="card-link">[22518]-2019-Winter-model-answer-paper</a></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="col">
+          <div class="card resource-card h-100">
+                <div class="card-body">
+              <h5 class="card-title">Notes</h5>
+              <p class="text-muted">
+                <i class="bi bi-info-circle"></i> Notes will be available soon.
+              </p>
+            </div>
+          </div>
+        </div>
+                </div>
+            </div>
+
+    <!-- Subject 22511 Section -->
+    <div class="mb-5">
+      <h2 class="mb-4 border-bottom pb-2" data-aos="fade-up">Elective 22519</h2>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" data-aos="fade-up" data-aos-delay="100">
+        <!-- Previous Year Question Papers -->
+        <div class="col">
+          <div class="card resource-card h-100">
+                <div class="card-body">
+              <h5 class="card-title">Previous Year Question Papers</h5>
+              <p><a href="https://drive.google.com/file/d/16y3Kq9cPJvXM1vbKJ_MYRY5tnOzkbaaI/view?usp=drive_link"
+                class="card-link">[22519]-2024-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/179rWazt1hQHmGl8bGfxHLwgNGqAK2Brr/view?usp=drive_link"
+                class="card-link">[22519]-2023-Winter-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/17DMlwLAI8zQHDtMVIMFsVsj3lW3Ppmcl/view?usp=drive_link"
+                class="card-link">[22519]-2023-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/17D_57wG4aDHxIbBqncnRHg-CRlKCI5mO/view?usp=drive_link"
+                class="card-link">[22519]-2022-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/17Hclr1-Jfo3pNT1ZtyvuQMdaz0nkz7fU/view?usp=drive_link"
+                class="card-link">[22519]-2019-Winter-question-paper</a></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Previous Year Model Answers -->
+        <div class="col">
+          <div class="card resource-card h-100">
+                <div class="card-body">
+              <h5 class="card-title">Previous Year Model Answers</h5>
+              <p><a href="https://drive.google.com/file/d/17j8XE6JDX9CWC5HceRxgm8C6enrHSihL/view?usp=drive_link"
+                class="card-link">[22519]-2019-Winter-model-answer-paper</a></p>
+            </div>
+                </div>
+            </div>
+
+        <!-- Notes -->
+        <div class="col">
+          <div class="card resource-card h-100">
+                <div class="card-body">
+              <h5 class="card-title">Notes</h5>
+              <p class="text-muted">
+                <i class="bi bi-info-circle"></i> Notes will be available soon.
+              </p>
+            </div>
+          </div>
+        </div>
+                </div>
+            </div>
+
+    <!-- Subject 22512 Section -->
+    <div class="mb-5">
+      <h2 class="mb-4 border-bottom pb-2" data-aos="fade-up">Elective 22520</h2>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" data-aos="fade-up" data-aos-delay="100">
+        <!-- Previous Year Question Papers -->
+        <div class="col">
+          <div class="card resource-card h-100">
+                <div class="card-body">
+              <h5 class="card-title">Previous Year Question Papers</h5>
+              <p><a href="https://drive.google.com/file/d/17kbxP-6HyTGQ3-paeRmHM1hng-sBN1eV/view?usp=drive_link"
+                class="card-link">[22520]-2024-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/17lWzACHJ5XlqoN_FWCRlVXl6LtueU7tO/view?usp=drive_link"
+                class="card-link">[22520]-2023-Winter-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/17sIOphK-X3clsSgrqN_A_i3DUKz2r8vH/view?usp=drive_link"
+                class="card-link">[22520]-2023-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/17vN5QstenC1ni9rUBjQ7tlaQ5-95gyVN/view?usp=drive_link"
+                class="card-link">[22520]-2022-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/18-Qys92telS6YO1w5QuhJqPt9-rOh8Ra/view?usp=drive_link"
+                class="card-link">[22520]-2019-Winter-question-paper</a></p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Previous Year Model Answers -->
+        <div class="col">
+          <div class="card resource-card h-100">
+                <div class="card-body">
+              <h5 class="card-title">Previous Year Model Answers</h5>
+              <p><a href="https://drive.google.com/file/d/182R_JPoA-sbBeDBv3dQJ28E_xpa34sul/view?usp=drive_link"
+                class="card-link">[22520]-2019-Winter-model-answer-paper</a></p>
+            </div>
+                </div>
+            </div>
+
+        <!-- Notes -->
+        <div class="col">
+          <div class="card resource-card h-100">
+                <div class="card-body">
+              <h5 class="card-title">Notes</h5>
+              <p class="text-muted">
+                <i class="bi bi-info-circle"></i> Notes will be available soon.
+              </p>
+            </div>
+          </div>
+        </div>
+        </div>
+    </div>
+
+    <!-- Subject 22513 Section -->
+    <div class="mb-5">
+      <h2 class="mb-4 border-bottom pb-2" data-aos="fade-up">Elective 22521</h2>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" data-aos="fade-up" data-aos-delay="100">
+        <!-- Previous Year Question Papers -->
+        <div class="col">
+          <div class="card resource-card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Previous Year Question Papers</h5>
+              <p><a href="https://drive.google.com/file/d/184a3bCikw3IFIfWKi118IdToF7Q0iQO6/view?usp=drivesdk"
+                class="card-link">[22521]-2024-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/189eLNEcLLX20YGi0zxhyBb-pP_ohVk_R/view?usp=drivesdk"
+                class="card-link">[22521]-2023-Winter-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/18GL7Ob4A-wA3FUA5cXlW49zHGmmXNxMs/view?usp=drivesdk"
+                class="card-link">[22521]-2023-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/18Jam2tdBQWAC55BO5tdpvWbmHxyV3LqE/view?usp=drivesdk"
+                class="card-link">[22521]-2022-Summer-question-paper</a></p>
+        <p><a href="https://drive.google.com/file/d/18MXIb1W1fflirvE3bedDHGCZ3rw8w-qJ/view?usp=drivesdk"
+                class="card-link">[22521]-2019-Winter-question-paper</a></p>
+
+                </div>
+          </div>
+                </div>
+
+        <!-- Previous Year Model Answers -->
+        <div class="col">
+          <div class="card resource-card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Previous Year Model Answers</h5>
+              <p><a href="https://drive.google.com/file/d/18_U7F0katLqnTwgVQY1rcjsUDgCOOPPd/view?usp=drive_link"
+                class="card-link">[22521]-2019-Winter-model-answer-paper</a></p>
+                </div>
+          </div>
+        </div>
+
+        <!-- Notes -->
+        <div class="col">
+          <div class="card resource-card h-100">
+            <div class="card-body">
+              <h5 class="card-title">Notes</h5>
+              <p class="text-muted">
+                <i class="bi bi-info-circle"></i> Notes will be available soon.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-wave"></div>
+  
+  <!-- Footer -->
+  
+    {% include 'components/footer.html' %}
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+    AOS.init({
+      duration: 800,
+      offset: 100,
+      once: true
+    });
+    </script>
+</body>
+
+</html>
