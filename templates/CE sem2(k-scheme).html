@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="PolytechEDGE - Civil Engineering Semester 2 K-Scheme resources for polytechnic students">
+  <title>CE Semester 2 K-Scheme | PolytechEDGE</title>
+
+  <!-- CSS libraries -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+<link rel="stylesheet" href="{{ url_for('static', filename='css/polytechEdge.css') }}">
+
+  <style>
+    /* Resource Card Styles */
+    .resource-card {
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      height: 100%;
+      border: none;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      background: var(--bs-tertiary-bg);
+    }
+
+    .resource-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .resource-card .card-body {
+      padding: 1.5rem;
+    }
+
+    .resource-card .card-title {
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      color: var(--bs-primary);
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.5rem;
+    }
+
+    .resource-card .card-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 50px;
+      height: 2px;
+      background: var(--bs-primary);
+      transition: all 0.3s ease;
+    }
+
+    .resource-card:hover .card-title::after {
+      width: 100%;
+    }
+
+    .resource-link {
+      display: block;
+      padding: 8px 0;
+      color: var(--bs-body-color);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      border-bottom: 1px solid rgba(var(--bs-secondary-rgb), 0.1);
+    }
+
+    .resource-link:hover {
+      color: var(--bs-primary);
+      transform: translateX(5px);
+    }
+
+    .resource-link i {
+      margin-right: 8px;
+      color: var(--bs-primary);
+    }
+
+    .resource-link:last-child {
+      border-bottom: none;
+    }
+
+    .hero-section {
+      background: linear-gradient(135deg, var(--bs-primary), #8e44ad);
+      padding: 5rem 0;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+      color: white;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      top: -100px;
+      right: -100px;
+    }
+
+    .hero-section::after {
+      content: '';
+      position: absolute;
+      width: 200px;
+      height: 200px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      bottom: -50px;
+      left: -50px;
+    }
+
+    /* Footer Styles */
+    .footer-wave {
+      height: 50px;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='%230d6efd' fill-opacity='0.4' d='M0,288L48,272C96,256,192,224,288,197.3C384,171,480,149,576,165.3C672,181,768,235,864,250.7C960,267,1056,245,1152,224C1248,203,1344,181,1392,170.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E");
+      background-size: cover;
+      background-repeat: no-repeat;
+    }
+
+    .footer {
+      background-color: var(--bs-dark);
+      color: white;
+    }
+
+    .footer-link {
+      display: block;
+      margin-bottom: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .footer-link:hover {
+      color: white;
+      transform: translateX(5px);
+    }
+
+    .social-icon {
+      width: 40px;
+      height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(var(--bs-primary-rgb), 0.1);
+      border-radius: 50%;
+      margin-right: 8px;
+      transition: all 0.3s ease;
+      color: var(--bs-primary);
+    }
+
+    .social-icon:hover {
+      background: var(--bs-primary);
+      color: white;
+      transform: translateY(-5px);
+    }
+
+    .mode-toggle {
+      width: 50px;
+      height: 26px;
+      background-color: #333;
+      border-radius: 20px;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 6px;
+    }
+
+    .toggle-icon {
+      font-size: 12px;
+      color: #fff;
+      z-index: 1;
+    }
+
+    .toggle-thumb {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background-color: #fff;
+      border-radius: 50%;
+      left: 3px;
+      transition: all 0.3s ease;
+    }
+
+    [data-bs-theme="light"] .toggle-thumb {
+      left: calc(100% - 23px);
+    }
+
+    [data-bs-theme="light"] .sun {
+      color: #ffc107;
+    }
+
+    [data-bs-theme="dark"] .moon {
+      color: #adb5bd;
+    }
+  </style>
+</head>
+
+<body data-bs-theme="dark">
+    <!-- Include the reusable header/navbar component -->
+    {% include 'components/header.html' %}
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AOS library for animations -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+  <!-- Navigation Bar -->
+  
+
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="container text-white">
+      <div class="row align-items-center">
+        <div class="col-lg-12 text-center" data-aos="fade-up">
+          <h1 class="display-4 fw-bold mb-3">Civil Engineering - Semester 2</h1>
+          <p class="lead mb-4">K-Scheme curriculum resources for Civil Engineering second semester. Access syllabi, 
+          question papers, lab manuals, and more.</p>
+          <div class="d-flex justify-content-center gap-3 mt-4">
+            <a href="{{ url_for('ce_k_scheme') }}" class="btn btn-outline-light rounded-pill px-4 py-2">
+              <i class="fas fa-arrow-left me-2"></i> Back to Semesters
+            </a>
+          </div>
+        </div>
+                </div>
+            </div>
+  </section>
+
+  <!-- Main Content -->
+  <div class="container my-5">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <!-- Syllabus Copy Card -->
+      <div class="col" data-aos="fade-up">
+        <div class="resource-card h-100">
+                <div class="card-body">
+            <h5 class="card-title">Syllabus Copy</h5>
+            <p><a href="https://drive.google.com/file/d/1wBjFFzla2oNeThAdzljX1o_POdjqdvzv/view?usp=drive_link"
+              class="card-link">[312002]-PROFESSIONAL COMMUNICATION (syllabus).</a></p>
+      <p> <a href="https://drive.google.com/file/d/1_pJSQhcSbQph4YO951sGQ2Mkq81quq83/view?usp=drive_link"
+              class="card-link">312003]-SOCIAL_AND_LIFE_SKILLS_(syllabus).pdf</a> </p>
+      <p> <a href="https://drive.google.com/file/d/1hX0Gwf9wfYTdzBJdZdiG6REP8XW7idQ7/view?usp=drive_link"
+              class="card-link">[312301]-APPLIED MATHEMATICS (syllabus)</a> </p>
+      <p> <a href="https://drive.google.com/file/d/1nq6PICEoMuY2osp0yQX1QAtMM74CxtvF/view?usp=drive_link"
+              class="card-link">[312308]-APPLIED SCIENCE (syllabus)</a> </p>
+      <p> <a href="https://drive.google.com/file/d/1TJ2A6e6yKa9s2TrZQt4wkcFVTrPkEPvT/view?usp=drive_link"
+              class="card-link">[312312]-ENGINEERING MECHANICS (syllabus).pdf</a> </p>
+      <p> <a href="https://drive.google.com/file/d/1Q2tUVCkCcpVcychXQJddfzbxLwZBrdVS/view?usp=drive_link"
+              class="card-link">[312338]-BUILDING MATERIAL AND CONSTRUCTION (syllabus).pdf</a> </p>
+      <p> <a href="https://drive.google.com/file/d/1HkHm5UotrmuFDcT4CRdCpKtiBR81rwxW/view?usp=drive_link"
+              class="card-link">[312339]-SURVEYING (syllabus).pdf</a> </p>
+
+          </div>
+                </div>
+            </div>
+
+      <!-- Previous Year Question Papers Card -->
+      <div class="col" data-aos="fade-up" data-aos-delay="100">
+        <div class="resource-card h-100">
+                <div class="card-body">
+            <h5 class="card-title">Previous Year Question Papers</h5>
+            <div class="text-center py-5">
+              <i class="fas fa-exclamation-circle fa-3x text-secondary mb-3"></i>
+              <p class="text-muted">Question papers will be added soon!</p>
+              <a href="#" class="btn btn-outline-primary mt-3 rounded-pill">
+                <i class="fas fa-bell me-2"></i> Get notified when available
+              </a>
+            </div>
+                </div>
+            </div>
+        </div>
+
+      <!-- Previous Year Model Answers Card -->
+      <div class="col" data-aos="fade-up" data-aos-delay="200">
+        <div class="resource-card h-100">
+                <div class="card-body">
+            <h5 class="card-title">Previous Year Model Answers</h5>
+            <div class="text-center py-5">
+              <i class="fas fa-exclamation-circle fa-3x text-secondary mb-3"></i>
+              <p class="text-muted">Model answers will be added soon!</p>
+              <a href="#" class="btn btn-outline-primary mt-3 rounded-pill">
+                <i class="fas fa-bell me-2"></i> Get notified when available
+              </a>
+            </div>
+          </div>
+                </div>
+            </div>
+
+      <!-- Lab Manuals Card -->
+      <div class="col" data-aos="fade-up">
+        <div class="resource-card h-100">
+                <div class="card-body">
+            <h5 class="card-title">Lab Manuals</h5>
+            <p> <a href="https://drive.google.com/file/d/1-juuOZF5G45H4ypKR_M7171K91ghTAXS/view?usp=drive_link"
+              class="card-link">[312002] - PROFESSIONAL COMMUNICATION (manual)</a> </p>
+      <p> <a href="https://drive.google.com/file/d/101oOVWCVOxOxUz0vnkl-ejCj6Eop9KUr/view?usp=drive_link"
+              class="card-link">[312308] - APPLIED SCIENCE chemistry (manual)</a> </p>
+      <p> <a href="https://drive.google.com/file/d/1-y4c3pIsLPxW_6AxVhduKkrxY6GAfFAf/view?usp=drive_link"
+              class="card-link">[312308] - APPLIED SCIENCE physics (manual)</a> </p>
+      <p> <a href="https://drive.google.com/file/d/1-uGIhXZjwqplo02fjsu83TfVyt2HsB7a/view?usp=drive_link"
+              class="card-link">[312312] - ENGINEERING MECHANICS (manual)</a> </p>
+      <p> <a href="https://drive.google.com/file/d/1-v6NHxm6FQC6fNKn1kSd_lYt7Kyizrpe/view?usp=drive_link"
+              class="card-link">[312338] - BUILDING MATERIAL AND CONSTRUCTION (manual)</a> </p>
+      <p> <a href="https://drive.google.com/file/d/102fCbCP0J_URwtJt4P0YiOHGFo_s6m_U/view?usp=drive_link"
+              class="card-link">[312339]-SURVEYING (manual).pdf.pdf</a> </p>
+                </div>
+            </div>
+        </div>
+
+      <!-- Solved Lab Manuals Card -->
+      <div class="col" data-aos="fade-up" data-aos-delay="100">
+        <div class="resource-card h-100">
+                <div class="card-body">
+            <h5 class="card-title">Solved Lab Manuals</h5>
+            <p> <a href="https://drive.google.com/file/d/1CvUUDw9ucJod1t4IFcUxpFyrsbxKGm0z/view?usp=drive_link"
+              class="card-link">{PolytechEDGE} [312002]-Professional Communication</a> </p>
+      <a href="https://drive.google.com/file/d/1-TExpqt0E4MLoep8NUEqkTCxls9Ahm64/view?usp=drive_link"
+          class="card-link">{PolytechEDGE} [312308]-APPLIED SCIENCE (chemistry)</a>
+      <p> <a href="#" class="card-link">Card link</a> </p>
+            <div class="mt-4 text-center">
+              <p class="text-muted">More solved lab manuals coming soon!</p>
+              <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">
+                <i class="fas fa-upload me-2"></i> Contribute
+              </a>
+            </div>
+                </div>
+            </div>
+        </div>
+
+      <!-- Notes Card -->
+      <div class="col" data-aos="fade-up" data-aos-delay="200">
+        <div class="resource-card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Notes</h5>
+            <div class="text-center py-5">
+              <i class="fas fa-book fa-3x text-secondary mb-3"></i>
+              <p class="text-muted">Notes will be added soon!</p>
+              <a href="#" class="btn btn-outline-primary mt-3 rounded-pill">
+                <i class="fas fa-upload me-2"></i> Contribute Notes
+              </a>
+            </div>
+          </div>
+        </div>
+                    </div>
+
+      <!-- Projects Card -->
+      <div class="col" data-aos="fade-up">
+        <div class="resource-card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Projects</h5>
+            <div class="text-center py-5">
+              <i class="fas fa-project-diagram fa-3x text-secondary mb-3"></i>
+              <p class="text-muted">Project resources will be added soon!</p>
+              <a href="#" class="btn btn-outline-primary mt-3 rounded-pill">
+                <i class="fas fa-upload me-2"></i> Contribute Projects
+              </a>
+            </div>
+          </div>
+        </div>
+                    </div>
+
+      <!-- Video Lectures Card -->
+      <div class="col" data-aos="fade-up" data-aos-delay="100">
+        <div class="resource-card h-100">
+          <div class="card-body">
+            <h5 class="card-title">Video Lectures</h5>
+            <div class="text-center py-5">
+              <i class="fas fa-video fa-3x text-secondary mb-3"></i>
+              <p class="text-muted">Video lectures will be added soon!</p>
+              <a href="#" class="btn btn-outline-primary mt-3 rounded-pill">
+                <i class="fas fa-bell me-2"></i> Get notified when available
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+                    </div>
+                </div>
+
+  <!-- Footer -->
+  
+    {% include 'components/footer.html' %}
+
+        <script>
+    // Initialize AOS animations
+    AOS.init({
+      duration: 800,
+      once: true
+    });
+    
+    // Theme toggle function
+    function toggleTheme() {
+      const body = document.body;
+      if (body.getAttribute('data-bs-theme') === 'dark') {
+        body.setAttribute('data-bs-theme', 'light');
+      } else {
+        body.setAttribute('data-bs-theme', 'dark');
+      }
+    }
+        </script>
+</body>
+
+</html>
